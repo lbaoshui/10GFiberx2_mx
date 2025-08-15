@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2022.05.26.11:09:09"
+ outputDirectory="E:/Z6-10G/027/Z8_out_5G_3.20_20220523/Z8out_5G_3.21/src/param_tx/IP/paramBlkRam2048x72/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Arria 10"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="10AX027H4F34E3SG"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="3"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="data" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="data" direction="input" role="datain" width="72" />
+  </interface>
+  <interface name="q" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="q" direction="output" role="dataout" width="72" />
+  </interface>
+  <interface name="wraddress" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="wraddress" direction="input" role="wraddress" width="11" />
+  </interface>
+  <interface name="rdaddress" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="rdaddress" direction="input" role="rdaddress" width="11" />
+  </interface>
+  <interface name="wren" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="wren" direction="input" role="wren" width="1" />
+  </interface>
+  <interface name="clock" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="clock" direction="input" role="clk" width="1" />
+  </interface>
+ </perimeter>
+ <entity kind="paramBlkRam2048x72" version="1.0" name="paramBlkRam2048x72">
+  <parameter name="AUTO_CLOCK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_CLOCK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_CLOCK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="10AX027H4F34E3SG" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="3" />
+  <generatedFiles>
+   <file
+       path="E:\Z6-10G\027\Z8_out_5G_3.20_20220523\Z8out_5G_3.21\src\param_tx\IP\paramBlkRam2048x72\synth\paramBlkRam2048x72.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\Z6-10G\027\Z8_out_5G_3.20_20220523\Z8out_5G_3.21\src\param_tx\IP\paramBlkRam2048x72\synth\paramBlkRam2048x72.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="E:/Z6-10G/027/Z8_out_5G_3.20_20220523/Z8out_5G_3.21/src/param_tx/IP/paramBlkRam2048x72.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/intelfpga_pro/18.1/ip/altera/megafunctions/ram_2port/ram_2_port_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="paramBlkRam2048x72">"Generating: paramBlkRam2048x72"</message>
+   <message level="Info" culprit="paramBlkRam2048x72">"Generating: paramBlkRam2048x72_ram_2port_181_uhwgodi"</message>
+  </messages>
+ </entity>
+ <entity
+   kind="ram_2port"
+   version="18.1"
+   name="paramBlkRam2048x72_ram_2port_181_uhwgodi">
+  <parameter name="GUI_CLKEN_ADDRESS_STALL_A" value="false" />
+  <parameter name="GUI_RDEN_DOUBLE" value="false" />
+  <parameter name="GUI_NBE_A" value="true" />
+  <parameter name="GUI_NUMWORDS_B" value="2048" />
+  <parameter name="GUI_ECC_TRIPLE" value="false" />
+  <parameter name="GUI_MIF_FILENAME" value="" />
+  <parameter name="GUI_NUMWORDS_A" value="2048" />
+  <parameter name="GUI_RAM_BLOCK_TYPE" value="Auto" />
+  <parameter name="GUI_MEMSIZE_WORDS" value="2048" />
+  <parameter name="GUI_CONSTRAINED_DONT_CARE" value="true" />
+  <parameter name="GUI_BLANK_MEMORY" value="0" />
+  <parameter name="GUI_CLKEN_OUTPUT_REG_A" value="false" />
+  <parameter name="GUI_CLKEN_OUTPUT_REG_B" value="false" />
+  <parameter name="GUI_RDW_B_MODE" value="New Data" />
+  <parameter name="GUI_BYTE_ENABLE_B" value="false" />
+  <parameter name="GUI_BYTE_ENABLE_A" value="false" />
+  <parameter name="GUI_BYTE_ENABLE_WIDTH" value="8" />
+  <parameter name="GUI_MODE" value="0" />
+  <parameter name="GUI_CLKEN_READ_OUTPUT_REG" value="false" />
+  <parameter name="GUI_RESOURCE_USAGE" value="8 M20K" />
+  <parameter name="GUI_SCLR_READ_OUTPUT_QB" value="false" />
+  <parameter name="GUI_SCLR_READ_OUTPUT_QA" value="false" />
+  <parameter name="GUI_QA_WIDTH" value="72" />
+  <parameter name="GUI_NBE_B" value="true" />
+  <parameter name="GUI_ECCENCBYPASS" value="false" />
+  <parameter name="GUI_BYTE_WIDTH_B" value="9" />
+  <parameter name="GUI_FORCE_TO_ZERO" value="false" />
+  <parameter name="GUI_BYTE_WIDTH_A" value="9" />
+  <parameter name="GUI_ECC_PIPELINE" value="false" />
+  <parameter name="GUI_WRITE_INPUT_PORTS" value="true" />
+  <parameter name="GUI_LC_IMPLEMENTION_OPTIONS" value="0" />
+  <parameter name="GUI_ECC_DOUBLE" value="false" />
+  <parameter name="GUI_RDADDRESS_WIDTH" value="11" />
+  <parameter name="GUI_ACLR_READ_INPUT_RDADDRESS" value="false" />
+  <parameter name="GUI_MEM_IN_BITS" value="0" />
+  <parameter name="GUI_CLKEN_READ_INPUT_REG" value="false" />
+  <parameter name="GUI_DIFFERENT_CLKENS" value="false" />
+  <parameter name="GUI_QB_WIDTH" value="72" />
+  <parameter name="GUI_FILE_REFERENCE" value="0" />
+  <parameter name="GUI_TBENCH" value="false" />
+  <parameter name="GUI_Q_PORT_MODE" value="2" />
+  <parameter name="GUI_DATA_WIDTH" value="72" />
+  <parameter name="GUI_CLKEN_INPUT_REG_A" value="false" />
+  <parameter name="GUI_CLKEN_ADDRESS_STALL_B" value="false" />
+  <parameter name="GUI_CLOCK_TYPE" value="0" />
+  <parameter name="GUI_CLKEN_INPUT_REG_B" value="false" />
+  <parameter name="DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="GUI_INIT_SIM_TO_X" value="false" />
+  <parameter name="GUI_CLKEN_WRADDRESSSTALL" value="false" />
+  <parameter name="GUI_INIT_FILE_LAYOUT" value="PORT_B" />
+  <parameter name="GUI_Q_WIDTH" value="72" />
+  <parameter name="GUI_DATAA_WIDTH" value="72" />
+  <parameter name="GUI_CLKEN_WRITE_INPUT_REG" value="false" />
+  <parameter name="GUI_READ_OUTPUT_QB" value="true" />
+  <parameter name="GUI_MEMSIZE_BITS" value="256" />
+  <parameter name="GUI_READ_OUTPUT_QA" value="true" />
+  <parameter name="GUI_WIDTH_ECCSTATUS" value="2" />
+  <parameter name="GUI_TDP_EMULATE" value="false" />
+  <parameter name="GUI_RDEN_SINGLE" value="false" />
+  <parameter name="GUI_PR" value="false" />
+  <parameter name="GUI_READ_INPUT_RDADDRESS" value="true" />
+  <parameter name="GUI_RDW_A_MODE" value="New Data" />
+  <parameter name="GUI_WRADDRESS_WIDTH" value="11" />
+  <parameter name="GUI_CLKEN_RDADDRESSSTALL" value="false" />
+  <parameter name="GUI_MAX_DEPTH" value="Auto" />
+  <parameter name="GUI_ACLR_READ_OUTPUT_QA" value="false" />
+  <parameter name="GUI_ACLR_READ_OUTPUT_QB" value="false" />
+  <parameter name="GUI_COHERENT_READ" value="false" />
+  <parameter name="GUI_VAR_WIDTH" value="false" />
+  <parameter name="GUI_MODULE_NAME" value="altera_syncram" />
+  <parameter name="GUI_WIDTH_ECCENCPARITY" value="8" />
+  <generatedFiles>
+   <file
+       path="E:\Z6-10G\027\Z8_out_5G_3.20_20220523\Z8out_5G_3.21\src\param_tx\IP\paramBlkRam2048x72\ram_2port_181\synth\paramBlkRam2048x72_ram_2port_181_uhwgodi.v"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\Z6-10G\027\Z8_out_5G_3.20_20220523\Z8out_5G_3.21\src\param_tx\IP\paramBlkRam2048x72\ram_2port_181\synth\paramBlkRam2048x72_ram_2port_181_uhwgodi.v"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/intelfpga_pro/18.1/ip/altera/megafunctions/ram_2port/ram_2_port_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="paramBlkRam2048x72" as="ram_2port_0" />
+  <messages>
+   <message level="Info" culprit="paramBlkRam2048x72">"Generating: paramBlkRam2048x72_ram_2port_181_uhwgodi"</message>
+  </messages>
+ </entity>
+</deploy>

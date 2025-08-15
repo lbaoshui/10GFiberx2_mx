@@ -1,0 +1,134 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 336 312)
+	(text "bfm_slave_avalon" (rect 116 -1 191 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 296 20 308)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk" (rect 0 0 10 12)(font "Arial" (font_size 8)))
+		(text "clk" (rect 4 61 22 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 128 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "reset" (rect 0 0 20 12)(font "Arial" (font_size 8)))
+		(text "reset" (rect 4 101 34 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 128 112)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "avs_writedata[511..0]" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "avs_writedata[511..0]" (rect 4 141 130 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 128 152)(line_width 3))
+	)
+	(port
+		(pt 0 168)
+		(input)
+		(text "avs_burstcount[6..0]" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "avs_burstcount[6..0]" (rect 4 157 124 168)(font "Arial" (font_size 8)))
+		(line (pt 0 168)(pt 128 168)(line_width 3))
+	)
+	(port
+		(pt 0 200)
+		(input)
+		(text "avs_address[22..0]" (rect 0 0 77 12)(font "Arial" (font_size 8)))
+		(text "avs_address[22..0]" (rect 4 189 112 200)(font "Arial" (font_size 8)))
+		(line (pt 0 200)(pt 128 200)(line_width 3))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "avs_write" (rect 0 0 38 12)(font "Arial" (font_size 8)))
+		(text "avs_write" (rect 4 221 58 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 128 232)(line_width 1))
+	)
+	(port
+		(pt 0 248)
+		(input)
+		(text "avs_read" (rect 0 0 38 12)(font "Arial" (font_size 8)))
+		(text "avs_read" (rect 4 237 52 248)(font "Arial" (font_size 8)))
+		(line (pt 0 248)(pt 128 248)(line_width 1))
+	)
+	(port
+		(pt 0 264)
+		(input)
+		(text "avs_byteenable[63..0]" (rect 0 0 88 12)(font "Arial" (font_size 8)))
+		(text "avs_byteenable[63..0]" (rect 4 253 130 264)(font "Arial" (font_size 8)))
+		(line (pt 0 264)(pt 128 264)(line_width 3))
+	)
+	(port
+		(pt 0 184)
+		(output)
+		(text "avs_readdata[511..0]" (rect 0 0 82 12)(font "Arial" (font_size 8)))
+		(text "avs_readdata[511..0]" (rect 4 173 124 184)(font "Arial" (font_size 8)))
+		(line (pt 0 184)(pt 128 184)(line_width 3))
+	)
+	(port
+		(pt 0 216)
+		(output)
+		(text "avs_waitrequest" (rect 0 0 64 12)(font "Arial" (font_size 8)))
+		(text "avs_waitrequest" (rect 4 205 94 216)(font "Arial" (font_size 8)))
+		(line (pt 0 216)(pt 128 216)(line_width 1))
+	)
+	(port
+		(pt 0 280)
+		(output)
+		(text "avs_readdatavalid" (rect 0 0 73 12)(font "Arial" (font_size 8)))
+		(text "avs_readdatavalid" (rect 4 269 106 280)(font "Arial" (font_size 8)))
+		(line (pt 0 280)(pt 128 280)(line_width 1))
+	)
+	(drawing
+		(text "clk" (rect 113 43 244 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 133 67 284 144)(font "Arial" (color 0 0 0)))
+		(text "clk_reset" (rect 75 83 204 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset" (rect 133 107 296 224)(font "Arial" (color 0 0 0)))
+		(text "s0" (rect 115 123 242 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "writedata" (rect 133 147 320 304)(font "Arial" (color 0 0 0)))
+		(text "burstcount" (rect 133 163 326 336)(font "Arial" (color 0 0 0)))
+		(text "readdata" (rect 133 179 314 368)(font "Arial" (color 0 0 0)))
+		(text "address" (rect 133 195 308 400)(font "Arial" (color 0 0 0)))
+		(text "waitrequest" (rect 133 211 332 432)(font "Arial" (color 0 0 0)))
+		(text "write" (rect 133 227 296 464)(font "Arial" (color 0 0 0)))
+		(text "read" (rect 133 243 290 496)(font "Arial" (color 0 0 0)))
+		(text "byteenable" (rect 133 259 326 528)(font "Arial" (color 0 0 0)))
+		(text "readdatavalid" (rect 133 275 344 560)(font "Arial" (color 0 0 0)))
+		(text " bfm_slave_avalon " (rect 253 296 614 602)(font "Arial" ))
+		(line (pt 128 32)(pt 208 32)(line_width 1))
+		(line (pt 208 32)(pt 208 296)(line_width 1))
+		(line (pt 128 296)(pt 208 296)(line_width 1))
+		(line (pt 128 32)(pt 128 296)(line_width 1))
+		(line (pt 129 52)(pt 129 76)(line_width 1))
+		(line (pt 130 52)(pt 130 76)(line_width 1))
+		(line (pt 129 92)(pt 129 116)(line_width 1))
+		(line (pt 130 92)(pt 130 116)(line_width 1))
+		(line (pt 129 132)(pt 129 284)(line_width 1))
+		(line (pt 130 132)(pt 130 284)(line_width 1))
+		(line (pt 0 0)(pt 336 0)(line_width 1))
+		(line (pt 336 0)(pt 336 312)(line_width 1))
+		(line (pt 0 312)(pt 336 312)(line_width 1))
+		(line (pt 0 0)(pt 0 312)(line_width 1))
+	)
+)

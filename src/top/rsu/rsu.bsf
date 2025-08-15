@@ -1,0 +1,136 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 272 344)
+	(text "rsu" (rect 127 -1 139 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 328 20 340)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clock" (rect 0 0 20 12)(font "Arial" (font_size 8)))
+		(text "clock" (rect 4 61 34 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 80 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "reset" (rect 0 0 20 12)(font "Arial" (font_size 8)))
+		(text "reset" (rect 4 101 34 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 80 112)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "read_param" (rect 0 0 49 12)(font "Arial" (font_size 8)))
+		(text "read_param" (rect 4 141 64 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 80 152)(line_width 1))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "param[2..0]" (rect 0 0 46 12)(font "Arial" (font_size 8)))
+		(text "param[2..0]" (rect 4 181 70 192)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 80 192)(line_width 3))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "reconfig" (rect 0 0 31 12)(font "Arial" (font_size 8)))
+		(text "reconfig" (rect 4 221 52 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 80 232)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(input)
+		(text "reset_timer" (rect 0 0 46 12)(font "Arial" (font_size 8)))
+		(text "reset_timer" (rect 4 261 70 272)(font "Arial" (font_size 8)))
+		(line (pt 0 272)(pt 80 272)(line_width 1))
+	)
+	(port
+		(pt 0 312)
+		(input)
+		(text "ctl_nupdt" (rect 0 0 35 12)(font "Arial" (font_size 8)))
+		(text "ctl_nupdt" (rect 4 301 58 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 80 312)(line_width 1))
+	)
+	(port
+		(pt 272 72)
+		(output)
+		(text "busy" (rect 0 0 20 12)(font "Arial" (font_size 8)))
+		(text "busy" (rect 246 61 270 72)(font "Arial" (font_size 8)))
+		(line (pt 272 72)(pt 192 72)(line_width 1))
+	)
+	(port
+		(pt 272 112)
+		(output)
+		(text "data_out[31..0]" (rect 0 0 57 12)(font "Arial" (font_size 8)))
+		(text "data_out[31..0]" (rect 199 101 289 112)(font "Arial" (font_size 8)))
+		(line (pt 272 112)(pt 192 112)(line_width 3))
+	)
+	(drawing
+		(text "clock" (rect 52 43 134 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 85 67 188 144)(font "Arial" (color 0 0 0)))
+		(text "reset" (rect 51 83 132 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset" (rect 85 107 200 224)(font "Arial" (color 0 0 0)))
+		(text "read_param" (rect 10 123 80 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "read_param" (rect 85 147 230 304)(font "Arial" (color 0 0 0)))
+		(text "param" (rect 44 163 118 339)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "param" (rect 85 187 200 384)(font "Arial" (color 0 0 0)))
+		(text "reconfig" (rect 34 203 116 419)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reconfig" (rect 85 227 218 464)(font "Arial" (color 0 0 0)))
+		(text "reset_timer" (rect 13 243 92 499)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_timer" (rect 85 267 236 544)(font "Arial" (color 0 0 0)))
+		(text "busy" (rect 193 43 410 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "busy" (rect 168 67 360 144)(font "Arial" (color 0 0 0)))
+		(text "data_out" (rect 193 83 434 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "data_out" (rect 152 107 352 224)(font "Arial" (color 0 0 0)))
+		(text "ctl_nupdt" (rect 28 283 110 579)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "ctl_nupdt" (rect 85 307 224 624)(font "Arial" (color 0 0 0)))
+		(text " rsu " (rect 255 328 540 666)(font "Arial" ))
+		(line (pt 80 32)(pt 192 32)(line_width 1))
+		(line (pt 192 32)(pt 192 328)(line_width 1))
+		(line (pt 80 328)(pt 192 328)(line_width 1))
+		(line (pt 80 32)(pt 80 328)(line_width 1))
+		(line (pt 81 52)(pt 81 76)(line_width 1))
+		(line (pt 82 52)(pt 82 76)(line_width 1))
+		(line (pt 81 92)(pt 81 116)(line_width 1))
+		(line (pt 82 92)(pt 82 116)(line_width 1))
+		(line (pt 81 132)(pt 81 156)(line_width 1))
+		(line (pt 82 132)(pt 82 156)(line_width 1))
+		(line (pt 81 172)(pt 81 196)(line_width 1))
+		(line (pt 82 172)(pt 82 196)(line_width 1))
+		(line (pt 81 212)(pt 81 236)(line_width 1))
+		(line (pt 82 212)(pt 82 236)(line_width 1))
+		(line (pt 81 252)(pt 81 276)(line_width 1))
+		(line (pt 82 252)(pt 82 276)(line_width 1))
+		(line (pt 191 52)(pt 191 76)(line_width 1))
+		(line (pt 190 52)(pt 190 76)(line_width 1))
+		(line (pt 191 92)(pt 191 116)(line_width 1))
+		(line (pt 190 92)(pt 190 116)(line_width 1))
+		(line (pt 81 292)(pt 81 316)(line_width 1))
+		(line (pt 82 292)(pt 82 316)(line_width 1))
+		(line (pt 0 0)(pt 272 0)(line_width 1))
+		(line (pt 272 0)(pt 272 344)(line_width 1))
+		(line (pt 0 344)(pt 272 344)(line_width 1))
+		(line (pt 0 0)(pt 0 344)(line_width 1))
+	)
+)

@@ -1,0 +1,65 @@
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TOOL_NAME "QsysPrimePro"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TOOL_VERSION "18.1"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TOOL_ENV "QsysPrimePro"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TOOL_VENDOR_NAME "Intel Corporation"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TOP_LEVEL_COMPONENT_NAME "lpm_mult"
+set_global_assignment -library "LPM_9x10" -name SOPCINFO_FILE [file join $::quartus(qip_path) "LPM_9x10.sopcinfo"]
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name SLD_INFO "QSYS_NAME LPM_9x10 HAS_SOPCINFO 1 GENERATION_ID 0"
+set_global_assignment -library "LPM_9x10" -name MISC_FILE [file join $::quartus(qip_path) "LPM_9x10.cmp"]
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_TARGETED_DEVICE_FAMILY "Arria 10"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_GENERATED_DEVICE_FAMILY "{Arria 10}"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_QSYS_MODE "STANDALONE"
+set_global_assignment -name SYNTHESIS_ONLY_QIP ON
+set_global_assignment -library "LPM_9x10" -name MISC_FILE [file join $::quartus(qip_path) "../LPM_9x10.ip"]
+
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_NAME "TFBNXzl4MTBfbHBtX211bHRfMTgxX3M2cXlwemk="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DISPLAY_NAME "TFBNX01VTFQgSW50ZWwgRlBHQSBJUA=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_VERSION "MTguMQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DESCRIPTION "TXVsdGlwbGllciBmb3IgdHdvIGlucHV0IGRhdGEgdmFsdWVzIGFuZCBwcm9kdWNlcyBhIHByb2R1Y3QgYXMgYW4gb3V0cHV0Lg=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "REVWSUNFX0ZBTUlMWQ==::QXJyaWEgMTA=::RGV2aWNlIEZhbWlseQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1dJRFRIX0E=::MTA=::RGF0YWEgd2lkdGg="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1dJRFRIX0I=::OQ==::RGF0YWIgd2lkdGg="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1dJRFRIX1A=::MTY=::VmFsdWU="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0NPTlNUQU5UX0I=::MA==::VmFsdWU="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0xBVEVOQ1k=::MQ==::TGF0ZW5jeQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0NMRUFSX1RZUEU=::Tk9ORQ==::Q2xlYXIgU2lnbmFsIFR5cGU="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0NMS0VO::ZmFsc2U=::Q3JlYXRlIGEgJ2Nsa2VuJyBjbG9jayBlbmFibGUgY2xvY2s="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1VTRV9NVUxU::MQ==::VHlwZQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0FVVE9fU0laRV9SRVNVTFQ=::MQ==::VHlwZQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0JfSVNfQ09OU1RBTlQ=::MA==::RG9lcyB0aGUgJ2RhdGFiJyBpbnB1dCBidXMgaGF2ZSBhIGNvbnN0YW50IHZhbHVlPw=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1NJR05FRF9NVUxU::MA==::V2hpY2ggdHlwZSBvZiBtdWx0aXBsaWNhdGlvbiBkbyB5b3Ugd2FudD8="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX0lNUExFTUVOVEFUSU9O::MA==::V2hpY2ggbXVsdGlwbGllciBpbXBsZW1lbnRhdGlvbiBzaG91bGQgYmUgdXNlZD8="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1BJUEVMSU5F::MQ==::UGlwZWxpbmU="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX09QVElNSVpF::MQ==::VHlwZQ=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_PARAMETER "R1VJX1JFU1VMVF9XSURUSA==::MTk=::UmVzdWx0IHdpZHRo"
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_GROUP "QmFzaWMgRnVuY3Rpb25zL0FyaXRobWV0aWM="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DOCUMENTATION_LINK "aHR0cDovL3d3dy5hbHRlcmEuY29tL2xpdGVyYXR1cmUvdWcvdWdfbHBtX2FsdF9tZnVnLnBkZg=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DOCUMENTATION_LINK "aHR0cHM6Ly93d3cuYWx0ZXJhLmNvbS9jb250ZW50L2RhbS9hbHRlcmEtd3d3L2dsb2JhbC9lbl9VUy9wZGZzL2xpdGVyYXR1cmUvdWcvdWdfbHBtX2FsdF9tZnVnLnBkZg=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DOCUMENTATION_LINK "aHR0cHM6Ly9kb2N1bWVudGF0aW9uLmFsdGVyYS5jb20vIy9saW5rL2tseTE0MzYxNDg3MDk1ODEva2x5MTQzOTE3NTk3MDczNg=="
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_COMPONENT_DOCUMENTATION_LINK "aHR0cHM6Ly9kb2N1bWVudGF0aW9uLmFsdGVyYS5jb20vIy9saW5rL2hjbzE0MjE2OTgwNDIwODcvaGNvMTQyMTY5ODAxMzQwOA=="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_NAME "TFBNXzl4MTA="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_DISPLAY_NAME "c3lzdGVt"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_REPORT_HIERARCHY "On"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_AUTHOR "SW50ZWwgQ29ycG9yYXRpb24="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_VERSION "MS4w"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MA==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::QXJyaWEgMTA=::QXV0byBERVZJQ0VfRkFNSUxZ"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::MTBBWDExNU40RjQ1RTNTRw==::QXV0byBERVZJQ0U="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Mw==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19DTE9DS19DTE9DS19SQVRF::LTE=::QXV0byBDTE9DS19SQVRF"
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19DTE9DS19DTE9DS19ET01BSU4=::LTE=::QXV0byBDTE9DS19ET01BSU4="
+set_global_assignment -entity "LPM_9x10" -library "LPM_9x10" -name IP_COMPONENT_PARAMETER "QVVUT19DTE9DS19SRVNFVF9ET01BSU4=::LTE=::QXV0byBSRVNFVF9ET01BSU4="
+
+
+set_global_assignment -library "lpm_mult_181" -name VERILOG_FILE [file join $::quartus(qip_path) "lpm_mult_181/synth/LPM_9x10_lpm_mult_181_s6qypzi.v"]
+set_global_assignment -library "LPM_9x10" -name VERILOG_FILE [file join $::quartus(qip_path) "synth/LPM_9x10.v"]
+
+
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_TOOL_NAME "lpm_mult"
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_TOOL_VERSION "18.1"
+set_global_assignment -entity "LPM_9x10_lpm_mult_181_s6qypzi" -library "lpm_mult_181" -name IP_TOOL_ENV "QsysPrimePro"
+

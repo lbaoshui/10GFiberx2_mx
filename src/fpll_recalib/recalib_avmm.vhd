@@ -1,0 +1,142 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+entity recalib_avmm is 
+generic (A_W : integer:= 10 ;
+         D_W : integer:= 32
+);
+port
+
+(
+   reset                : in std_logic ;
+   clk                  : in std_logic ;
+   clr_i       : in    std_logic ;
+   cfg_done    : out   std_logic := '0';
+   cfg_req     : in    std_logic := '0';
+   cfg_ack     : out   std_logic := '0';
+   cfg_is_read : in    std_logic := '0'; 
+   cfg_addr    : in    std_logic_vector(A_W-1 downto 0);
+   cfg_wdata   : in    std_logic_vector(D_W-1 downto 0);
+   cfg_rdata   : out   std_logic_vector(D_W-1 downto 0);
+   cfg_mask    : in    std_logic_vector(D_W-1 downto 0);
+    
+  --  -// TX PLL reconfig controller interface
+   txpll_mgmt_address     :out std_logic_vector(A_W-1 downto 0) ;---output wire [9:0] ,
+   txpll_mgmt_writedata   :out std_logic_vector(D_W-1 downto 0) ;---output wire [31:0],
+   txpll_mgmt_readdata    :in  std_logic_vector(D_W-1 downto 0) ;---input  wire [31:0],
+   txpll_mgmt_write       :out std_logic  ;---output wire       ,
+   txpll_mgmt_read        :out std_logic  ;---output wire       ,
+   txpll_mgmt_waitrequest : in std_logic   ----input  wire   
+);
+
+end recalib_avmm;
+
+architecture beha of recalib_avmm is 
+
+type r_defst is (R_IDLE,R_READ, R_SUBW, R_TURND, R_TURNW, R_WAITIDLE);
+signal r_state : r_defst := R_IDLE;
+signal is_do_read : std_logic := '0'; 
+SIGNAL nRST : std_logic ;
+signal int_rdata   :     std_logic_vector(D_W-1 downto 0);
+begin 
+ -----------------config one reg tractioin
+   nRST <= not reset ;
+   cfg_rdata <= int_rdata ;
+   
+   process(nRST,clk)
+   begin 
+        if nRST = '0' then 
+            r_state <= R_IDLE; 
+            txpll_mgmt_read  <= '0';
+            txpll_mgmt_write <= '0';
+            txpll_mgmt_address  <= (others=>'0');
+            txpll_mgmt_writedata <= (others=>'0');
+            cfg_ack   <= '0';
+            is_do_read   <= '0';
+            cfg_done         <= '0';
+        elsif rising_edge(clk) then 
+            case(r_state) is 
+                 WHEN R_IDLE =>
+                     txpll_mgmt_address  <= (OTHERS=>'0'); ----"01"&X"00"; ---0x126
+                     txpll_mgmt_write <= '0';
+                     txpll_mgmt_read  <= '0';
+                     cfg_ack          <= '0';
+                     cfg_done         <= '0';
+                     txpll_mgmt_writedata <= (others=>'0');
+                     if cfg_req = '1' then --accept it .....
+                         cfg_ack <= '1';
+                         txpll_mgmt_address  <= cfg_addr;
+                         is_do_read       <= cfg_is_read ;
+                        if cfg_is_read = '1' then 
+                            txpll_mgmt_read  <= '1';
+                            txpll_mgmt_write <= '0';
+                        else --first readback, then write back
+                            txpll_mgmt_read <= '1';
+                            txpll_mgmt_write <= '0'; 
+                          ---  txpll_mgmt_writedata <= cfg_wdata ;
+                        end if;
+                        r_state <= R_READ ;
+                       
+                    else 
+                        r_state <= R_IDLE; 
+                    end if;
+                    
+                WHEN R_READ=>
+                       cfg_done <= '0';
+                       cfg_ack  <= '0'; 
+                       if txpll_mgmt_waitrequest = '0' then 
+                            int_rdata <= txpll_mgmt_readdata;
+                            txpll_mgmt_read <= '0';
+                            if is_do_read = '1' then 
+                                r_state <= R_TURND ;  ----done 
+                            else 
+                                r_state <= R_TURNW; --go on  read 
+                            end if;
+                       end if;
+                       
+                when R_TURND =>
+                     r_state   <= R_IDLE ;
+                     cfg_done  <= '1';
+                     cfg_ack   <= '0';
+                     txpll_mgmt_read <= '0';
+                     txpll_mgmt_write <= '0';
+                       
+                when R_TURNW=>
+                      cfg_ack  <= '0';
+                      cfg_done <= '0';
+                     --- r_state  <= R_WAITIDLE;
+                      txpll_mgmt_read <= '0';
+                      txpll_mgmt_write <= '0';
+                      r_state <= R_SUBW;
+                      
+                when R_SUBW =>
+                      cfg_done        <= '0';
+                      txpll_mgmt_write <= '1';
+                      txpll_mgmt_read  <= '0';
+                      txpll_mgmt_writedata <= (cfg_wdata and cfg_mask) or ( ( not cfg_mask) and int_rdata);
+                      r_state   <= R_WAITIDLE;
+                      
+                      
+                when R_WAITIDLE =>
+                     cfg_done <= '0';
+                     cfg_ack <= '0';
+                     if txpll_mgmt_waitrequest = '0' then 
+                        txpll_mgmt_read <= '0';
+                        txpll_mgmt_write <= '0'; 
+                        r_state   <= R_TURND; 
+                     else 
+                        r_state   <= R_WAITIDLE;
+                     end if;
+                     
+                when others=>
+                    r_state <= R_IDLE;
+                    txpll_mgmt_read <= '0';
+                    txpll_mgmt_write <= '0';
+              end case;
+        end if;
+  end process;
+  
+
+end beha ;

@@ -1,0 +1,50 @@
+	component phyreset_5g is
+		port (
+			clock               : in  std_logic := 'X'; -- clk
+			reset               : in  std_logic := 'X'; -- reset
+			pll_powerdown0      : out std_logic;        -- pll_powerdown
+			tx_analogreset0     : out std_logic;        -- tx_analogreset
+			tx_analogreset1     : out std_logic;        -- tx_analogreset
+			tx_analogreset2     : out std_logic;        -- tx_analogreset
+			tx_analogreset3     : out std_logic;        -- tx_analogreset
+			tx_digitalreset0    : out std_logic;        -- tx_digitalreset
+			tx_digitalreset1    : out std_logic;        -- tx_digitalreset
+			tx_digitalreset2    : out std_logic;        -- tx_digitalreset
+			tx_digitalreset3    : out std_logic;        -- tx_digitalreset
+			tx_ready0           : out std_logic;        -- tx_ready
+			tx_ready1           : out std_logic;        -- tx_ready
+			tx_ready2           : out std_logic;        -- tx_ready
+			tx_ready3           : out std_logic;        -- tx_ready
+			pll_locked0         : in  std_logic := 'X'; -- pll_locked
+			pll_select0         : in  std_logic := 'X'; -- pll_select
+			pll_select1         : in  std_logic := 'X'; -- pll_select
+			pll_select2         : in  std_logic := 'X'; -- pll_select
+			pll_select3         : in  std_logic := 'X'; -- pll_select
+			tx_cal_busy0        : in  std_logic := 'X'; -- tx_cal_busy
+			tx_cal_busy1        : in  std_logic := 'X'; -- tx_cal_busy
+			tx_cal_busy2        : in  std_logic := 'X'; -- tx_cal_busy
+			tx_cal_busy3        : in  std_logic := 'X'; -- tx_cal_busy
+			pll_cal_busy0       : in  std_logic := 'X'; -- pll_cal_busy
+			rx_analogreset0     : out std_logic;        -- rx_analogreset
+			rx_analogreset1     : out std_logic;        -- rx_analogreset
+			rx_analogreset2     : out std_logic;        -- rx_analogreset
+			rx_analogreset3     : out std_logic;        -- rx_analogreset
+			rx_digitalreset0    : out std_logic;        -- rx_digitalreset
+			rx_digitalreset1    : out std_logic;        -- rx_digitalreset
+			rx_digitalreset2    : out std_logic;        -- rx_digitalreset
+			rx_digitalreset3    : out std_logic;        -- rx_digitalreset
+			rx_ready0           : out std_logic;        -- rx_ready
+			rx_ready1           : out std_logic;        -- rx_ready
+			rx_ready2           : out std_logic;        -- rx_ready
+			rx_ready3           : out std_logic;        -- rx_ready
+			rx_is_lockedtodata0 : in  std_logic := 'X'; -- rx_is_lockedtodata
+			rx_is_lockedtodata1 : in  std_logic := 'X'; -- rx_is_lockedtodata
+			rx_is_lockedtodata2 : in  std_logic := 'X'; -- rx_is_lockedtodata
+			rx_is_lockedtodata3 : in  std_logic := 'X'; -- rx_is_lockedtodata
+			rx_cal_busy0        : in  std_logic := 'X'; -- rx_cal_busy
+			rx_cal_busy1        : in  std_logic := 'X'; -- rx_cal_busy
+			rx_cal_busy2        : in  std_logic := 'X'; -- rx_cal_busy
+			rx_cal_busy3        : in  std_logic := 'X'  -- rx_cal_busy
+		);
+	end component phyreset_5g;
+

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2021.08.26.14:40:10"
+ outputDirectory="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/ip/bfm_slave_avalon/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Arria 10"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="10AX027H4F34I3SG"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="3"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="clk" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="clk" direction="input" role="clk" width="1" />
+  </interface>
+  <interface name="clk_reset" kind="reset" start="0">
+   <property name="associatedClock" value="clk" />
+   <property name="synchronousEdges" value="DEASSERT" />
+   <port name="reset" direction="input" role="reset" width="1" />
+  </interface>
+  <interface name="s0" kind="avalon" start="0">
+   <property name="addressAlignment" value="DYNAMIC" />
+   <property name="addressGroup" value="0" />
+   <property name="addressSpan" value="536870912" />
+   <property name="addressUnits" value="WORDS" />
+   <property name="alwaysBurstMaxBurst" value="false" />
+   <property name="associatedClock" value="clk" />
+   <property name="associatedReset" value="clk_reset" />
+   <property name="bitsPerSymbol" value="8" />
+   <property name="bridgedAddressOffset" value="0" />
+   <property name="bridgesToMaster" value="" />
+   <property name="burstOnBurstBoundariesOnly" value="true" />
+   <property name="burstcountUnits" value="WORDS" />
+   <property name="constantBurstBehavior" value="false" />
+   <property name="explicitAddressSpan" value="0" />
+   <property name="holdTime" value="0" />
+   <property name="interleaveBursts" value="false" />
+   <property name="isBigEndian" value="false" />
+   <property name="isFlash" value="false" />
+   <property name="isMemoryDevice" value="false" />
+   <property name="isNonVolatileStorage" value="false" />
+   <property name="linewrapBursts" value="true" />
+   <property name="maximumPendingReadTransactions" value="1" />
+   <property name="maximumPendingWriteTransactions" value="0" />
+   <property name="minimumReadLatency" value="1" />
+   <property name="minimumResponseLatency" value="1" />
+   <property name="minimumUninterruptedRunLength" value="1" />
+   <property name="prSafe" value="false" />
+   <property name="printableDevice" value="false" />
+   <property name="readLatency" value="0" />
+   <property name="readWaitStates" value="1" />
+   <property name="readWaitTime" value="1" />
+   <property name="registerIncomingSignals" value="false" />
+   <property name="registerOutgoingSignals" value="false" />
+   <property name="setupTime" value="0" />
+   <property name="timingUnits" value="Cycles" />
+   <property name="transparentBridge" value="false" />
+   <property name="waitrequestAllowance" value="0" />
+   <property name="wellBehavedWaitrequest" value="false" />
+   <property name="writeLatency" value="0" />
+   <property name="writeWaitStates" value="0" />
+   <property name="writeWaitTime" value="0" />
+   <port name="avs_writedata" direction="input" role="writedata" width="512" />
+   <port name="avs_burstcount" direction="input" role="burstcount" width="7" />
+   <port name="avs_readdata" direction="output" role="readdata" width="512" />
+   <port name="avs_address" direction="input" role="address" width="23" />
+   <port
+       name="avs_waitrequest"
+       direction="output"
+       role="waitrequest"
+       width="1" />
+   <port name="avs_write" direction="input" role="write" width="1" />
+   <port name="avs_read" direction="input" role="read" width="1" />
+   <port name="avs_byteenable" direction="input" role="byteenable" width="64" />
+   <port
+       name="avs_readdatavalid"
+       direction="output"
+       role="readdatavalid"
+       width="1" />
+  </interface>
+ </perimeter>
+ <entity kind="bfm_slave_avalon" version="1.0" name="bfm_slave_avalon">
+  <parameter name="AUTO_CLK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="10AX115N4F45E3SG" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="AUTO_CLK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_CLK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="3" />
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\synth\bfm_slave_avalon.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\synth\bfm_slave_avalon.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/ip/bfm_slave_avalon.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/quartus/ip/altera/sopc_builder_ip/verification/altera_avalon_mm_slave_bfm/altera_avalon_mm_slave_bfm_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="bfm_slave_avalon">"Generating: bfm_slave_avalon"</message>
+   <message level="Info" culprit="bfm_slave_avalon">"Generating: altera_avalon_mm_slave_bfm"</message>
+  </messages>
+ </entity>
+ <entity
+   kind="altera_avalon_mm_slave_bfm"
+   version="18.1"
+   name="altera_avalon_mm_slave_bfm">
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\verbosity_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\avalon_mm_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\avalon_utilities_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\altera_avalon_mm_slave_bfm.sv"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\verbosity_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\avalon_mm_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\avalon_utilities_pkg.sv"
+       attributes="" />
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\ip\bfm_slave_avalon\altera_avalon_mm_slave_bfm_181\synth\altera_avalon_mm_slave_bfm.sv"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/quartus/ip/altera/sopc_builder_ip/verification/altera_avalon_mm_slave_bfm/altera_avalon_mm_slave_bfm_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="bfm_slave_avalon" as="mm_slave_bfm_0" />
+  <messages>
+   <message level="Info" culprit="bfm_slave_avalon">"Generating: altera_avalon_mm_slave_bfm"</message>
+  </messages>
+ </entity>
+</deploy>

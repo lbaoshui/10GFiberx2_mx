@@ -1,0 +1,193 @@
+
+
+library ieee ;
+use ieee.std_logic_1164.all ;
+use ieee.std_logic_arith.all ;
+use ieee.std_logic_unsigned.all ;
+
+entity uart_param_top is
+generic
+(
+    CONS_VER_HIGH       : std_logic_vector(7  downto 0);
+    CONS_VER_LOW        : std_logic_vector(7  downto 0);
+    TXSUBCARD_TYPE      : std_logic_vector(7  downto 0);
+    PORT_NUM            : integer;
+    SERDES_SPEED_MSB    : integer;
+    SERDES_SPEED_LSB    : integer;
+    BAUD_DIV            : std_logic_vector(15 downto 0);
+    HSSI_NUM            : integer:= 2
+);
+port
+(
+    nRST            : in std_logic ;
+    sysclk          : in std_logic;
+	---to reduce the clock domain in HDMI region 
+	nRST_cmd        : in std_logic ;
+	cmd_clk         : in std_logic;    
+	
+    p_Frame_en_cmd    : out std_logic ;
+    p_Wren_cmd        : out std_logic ;
+    p_Data_cmd        : out std_logic_vector(7 downto 0);
+    p_Addr_cmd        : out std_logic_vector(10 downto 0);
+    cur_slot_num_cmd  : out std_logic_vector(15 downto 0);
+     
+    ---uart: 2 pins of uart
+    rxd_top         : in  std_logic ;  --from top pad
+    txd_top         : out std_logic ; ---to top pad
+    txd_info_top    : out std_logic ; ---to top pad
+
+    --info
+    crc_info        : in std_logic_vector(7 downto 0);
+    err_num         : in std_logic_vector(63 downto 0);
+    err_num_fiber   : in std_logic_vector(63 downto 0);
+    eth_link        : in std_logic_vector(HSSI_NUM*10-1 downto 0);
+    fiber_link      : in std_logic_vector(HSSI_NUM-1 downto 0);
+
+    p_Frame_en_o    : out std_logic ;
+    p_Wren_o        : out std_logic ;
+    p_Data_o        : out std_logic_vector(7 downto 0);
+    p_Addr_o        : out std_logic_vector(10 downto 0);
+    cur_slot_num    : out std_logic_vector(15 downto 0);
+
+    Up_ReadEn_o         : out std_logic;
+    Up_req              : in  std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ack              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ReadLength_i     : in  std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : out std_logic_vector(10 downto 0);
+    Up_ReadData_i       : in  std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+
+);
+end uart_param_top ;
+
+architecture beha of uart_param_top IS
+component uart_param is
+generic
+(
+    TXSUBCARD_TYPE      : std_logic_vector(7  downto 0);
+    BAUD_DIV            : std_logic_vector(15 downto 0):=X"043C";
+    HSSI_NUM            : integer:= 2
+);
+port
+(
+    nRST            : in std_logic ;
+    sysclk          : in std_logic;
+	---to reduce the clock domain in HDMI region 
+	nRST_cmd        : in std_logic ;
+	cmd_clk         : in std_logic;    
+	
+    p_Frame_en_cmd    : out std_logic ;
+    p_Wren_cmd        : out std_logic ;
+    p_Data_cmd        : out std_logic_vector(7 downto 0);
+    p_Addr_cmd        : out std_logic_vector(10 downto 0);  
+    cur_slot_num_cmd  : out std_logic_vector(7 downto 0);
+	------sysclk clock domain ---------------------------------
+    ---uart: 2 pins of uart
+    rxd_top         : in  std_logic ;  --from top pad
+    txd_top         : out std_logic ; ---to top pad
+
+    p_Frame_en_o    : out std_logic ;
+    p_Wren_o        : out std_logic ;
+    p_Data_o        : out std_logic_vector(7 downto 0);
+    p_Addr_o        : out std_logic_vector(10 downto 0);
+    cur_slot_num    : out std_logic_vector(15 downto 0);
+
+    Up_ReadEn_o         : out std_logic;
+    Up_req              : in  std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ack              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ReadLength_i     : in  std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : out std_logic_vector(10 downto 0);
+    Up_ReadData_i       : in  std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+);
+end component ;
+
+component uart_info is
+generic
+(
+    CONS_VER_HIGH       : std_logic_vector(7  downto 0);
+    CONS_VER_LOW        : std_logic_vector(7  downto 0);
+    TXSUBCARD_TYPE      : std_logic_vector(7  downto 0);
+    PORT_NUM            : integer;
+    SERDES_SPEED_MSB    : integer;
+    SERDES_SPEED_LSB    : integer;
+    BAUD_DIV            : std_logic_vector(15 downto 0)
+);
+port
+(
+    nRST                : in std_logic ;
+    sysclk              : in std_logic ;
+    txd_info_top        : out std_logic ; ---to top pad
+    eth_link            : in std_logic_vector(2*10-1 downto 0);
+    fiber_link          : in std_logic_vector(2-1 downto 0);
+
+    crc_info            : in std_logic_vector(7 downto 0);
+    err_num_fiber       : in std_logic_vector(63 downto 0);
+    err_num             : in std_logic_vector(63 downto 0)
+);
+end component;
+
+begin
+
+uart_param_inst: uart_param
+generic map
+(
+    TXSUBCARD_TYPE  => TXSUBCARD_TYPE,
+    BAUD_DIV        => BAUD_DIV,
+    HSSI_NUM        => HSSI_NUM
+)
+port map
+(
+    nRST              => nRST  ,
+    sysclk            => sysclk,
+	---to reduce the clock domain in HDMI region 
+	nRST_cmd          => nRST_cmd,
+	cmd_clk           => cmd_clk ,
+	
+    p_Frame_en_cmd    => p_Frame_en_cmd ,
+    p_Wren_cmd        => p_Wren_cmd     ,
+    p_Data_cmd        => p_Data_cmd     ,
+    p_Addr_cmd        => p_Addr_cmd     ,    
+    cur_slot_num_cmd  => cur_slot_num_cmd ,
+	
+    ---uart: 2 pins of uart
+    rxd_top             => rxd_top,
+    txd_top             => txd_top,
+
+    p_Frame_en_o        => p_Frame_en_o,
+    p_Wren_o            => p_Wren_o    ,
+    p_Data_o            => p_Data_o    ,
+    p_Addr_o            => p_Addr_o    ,
+    cur_slot_num        => cur_slot_num,
+
+    Up_ReadEn_o         => Up_ReadEn_o,
+    Up_req              => Up_req,
+    Up_ack              => Up_ack,
+    Up_ReadLength_i     => Up_ReadLength_i,
+    Up_ReadAddr_o       => Up_ReadAddr_o,
+    Up_ReadData_i       => Up_ReadData_i
+);
+
+info_up : uart_info
+generic map
+(
+    CONS_VER_HIGH       => CONS_VER_HIGH,
+    CONS_VER_LOW        => CONS_VER_LOW,
+    TXSUBCARD_TYPE      => TXSUBCARD_TYPE,
+    PORT_NUM            => PORT_NUM,
+    SERDES_SPEED_MSB    => SERDES_SPEED_MSB,
+    SERDES_SPEED_LSB    => SERDES_SPEED_LSB,
+    BAUD_DIV            => BAUD_DIV
+)
+port map
+(
+    nRST                => nRST,
+    sysclk              => sysclk,
+    txd_info_top        => txd_info_top,
+    eth_link            => eth_link,
+    fiber_link          => fiber_link,
+
+    err_num             => err_num,
+    err_num_fiber       => err_num_fiber,
+    crc_info            => crc_info
+);
+
+end beha;

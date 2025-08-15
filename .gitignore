@@ -1,0 +1,8 @@
+bin/
+cof/
+modelsim/
+prj032/
+*.jic
+*.hex
+*.rbf
+*.csv

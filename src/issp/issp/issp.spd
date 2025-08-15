@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file
+   path="altera_in_system_sources_probes_1920/sim/altsource_probe.v"
+   type="VERILOG"
+   library="altera_in_system_sources_probes_1920" />
+ <file
+   path="sim/issp.v"
+   type="VERILOG"
+   library="issp"
+   hasInlineConfiguration="true" />
+ <topLevel name="issp.issp" />
+ <deviceFamily name="arria10" />
+ <device name="10AX032H4F34E3SG" />
+</simPackage>

@@ -1,0 +1,170 @@
+
+
+library ieee ;
+use ieee.std_logic_1164.all ;
+use ieee.std_logic_arith.all ;
+use ieee.std_logic_unsigned.all ;
+
+entity uart_64to8 is
+generic
+(
+    HSSI_NUM            : integer:= 2
+);
+port
+(
+    nRST                : in  std_logic;
+    sysclk              : in  std_logic;
+    nRST_rxclk          : in  std_logic;
+    rxclk               : in  std_logic;
+    nRST_txclk          : in  std_logic;
+    txclk               : in  std_logic;
+    xgmii_tx_data       : in  std_logic_vector(HSSI_NUM*64-1 downto 0);
+    xgmii_tx_ctrl       : in  std_logic_vector(HSSI_NUM*8-1 downto 0);
+    xgmii_rx_updata     : in  std_logic_vector(HSSI_NUM*64-1 downto 0);
+    xgmii_rx_upctrl     : in  std_logic_vector(HSSI_NUM*8-1 downto 0);
+    cur_slot_num        : in  std_logic_vector(3 downto 0);
+
+    eth_link_sys            : out std_logic_vector(HSSI_NUM*10-1 downto 0);
+    err_num_fiber_sys       : out std_logic_vector(HSSI_NUM*32-1 downto 0);
+    subframe_FB             : out std_logic_vector(HSSI_NUM-1 downto 0);
+
+
+    Up_ack              : in  std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_req              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ReadEn_o         : in  std_logic;
+    Up_ReadLength_i     : out std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : in  std_logic_vector(10 downto 0);
+    Up_ReadData_i       : out std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+
+);
+end uart_64to8;
+
+architecture beha of uart_64to8 IS
+
+component xgmii2uart is
+generic
+(
+    port_num            : integer:= 0
+);
+port
+(
+    nRST                : in  std_logic;
+    sysclk              : in  std_logic;
+    nRST_rxclk          : in  std_logic;
+    rxclk               : in  std_logic;
+    nRST_txclk          : in  std_logic;
+    txclk               : in  std_logic;
+    xgmii_tx_data       : in  std_logic_vector(64-1 downto 0);
+    xgmii_tx_ctrl       : in  std_logic_vector(8-1 downto 0);
+    xgmii_rx_updata     : in  std_logic_vector(64-1 downto 0);
+    xgmii_rx_upctrl     : in  std_logic_vector(8-1 downto 0);
+    cur_slot_num        : in  std_logic_vector(3 downto 0);
+
+    eth_link            : out std_logic_vector(9 downto 0);
+    err_num_fiber       : out std_logic_vector(31 downto 0);
+    subframe_FB         : out std_logic;
+
+
+    Up_ack              : in  std_logic;
+    Up_req              : out std_logic;
+    Up_ReadEn_o         : in  std_logic;
+    Up_ReadLength_i     : out std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : in  std_logic_vector(10 downto 0);
+    Up_ReadData_i       : out std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+
+);
+end component;
+
+signal Up_ReadLength    : std_logic_vector(HSSI_NUM*11-1 downto 0);
+signal Up_ReadData      : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal Up_req_buf       : std_logic_vector(HSSI_NUM-1 downto 0);
+signal port0_using      : std_logic;
+
+signal xgmii_rx_updata_d1 : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_rx_upctrl_d1 : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal xgmii_rx_updata_d2 : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_rx_upctrl_d2 : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal xgmii_rx_updata_d3 : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_rx_upctrl_d3 : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal upload_en          : std_logic_vector(HSSI_NUM-1 downto 0);
+
+begin
+
+xgmii2uart_gen : for i in 0 to HSSI_NUM-1 generate --2 fiber or 4 fiber or 4 5G-eth
+xgmii2uart_inst : xgmii2uart
+generic map (
+    port_num        => i
+)
+port map (
+    nRST            => nRST,
+    sysclk          => sysclk,
+    nRST_rxclk      => nRST_rxclk,
+    rxclk           => rxclk,
+    nRST_txclk      => nRST_txclk,
+    txclk           => txclk,
+    xgmii_tx_data   => xgmii_tx_data(i*64+63 downto i*64),
+    xgmii_tx_ctrl   => xgmii_tx_ctrl(i*8+7 downto i*8),
+    xgmii_rx_updata => xgmii_rx_updata_d3(i*64+63 downto i*64),
+    xgmii_rx_upctrl => xgmii_rx_upctrl_d3(i*8+7 downto i*8),
+    cur_slot_num    => cur_slot_num,
+
+    eth_link        => eth_link(i*10+9 downto i*10),
+    err_num_fiber   => err_num_fiber(i*32+31 downto i*32),
+    subframe_FB     => subframe_FB(i),
+
+    Up_ack          => Up_ack(i),
+    Up_req          => Up_req_buf(i),
+    Up_ReadEn_o     => Up_ReadEn_o,
+    Up_ReadLength_i => Up_ReadLength(i*11+10 downto i*11),
+    Up_ReadAddr_o   => Up_ReadAddr_o,
+    Up_ReadData_i   => Up_ReadData(i*8+7 downto i*8)
+);
+process(rxclk,nRST_rxclk)
+begin
+    if nRST_rxclk = '0' then
+        upload_en(i) <= '0';
+    elsif rising_edge(rxclk) then
+        xgmii_rx_updata_d1(i*64+63 downto i*64) <= xgmii_rx_updata(i*64+63 downto i*64);
+        xgmii_rx_updata_d2(i*64+63 downto i*64) <= xgmii_rx_updata_d1(i*64+63 downto i*64);
+        xgmii_rx_updata_d3(i*64+63 downto i*64) <= xgmii_rx_updata_d2(i*64+63 downto i*64);
+        xgmii_rx_upctrl_d1(i*8+7 downto i*8) <= xgmii_rx_upctrl(i*8+7 downto i*8);
+        xgmii_rx_upctrl_d2(i*8+7 downto i*8) <= xgmii_rx_upctrl_d1(i*8+7 downto i*8);
+		
+		--need to fixed here ....
+        if xgmii_rx_upctrl_d1(i*8+7 downto i*8) = X"01" then  --filter here ,frame type here 
+            if xgmii_rx_updata(i*64+39 downto i*64+32) = X"55" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"54" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"01" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"06" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"26" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"D0" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"07" or
+               xgmii_rx_updata(i*64+39 downto i*64+32) = X"00" then
+                upload_en(i) <= '0';
+            else
+                upload_en(i) <= '1';
+            end if;
+        end if;
+        if upload_en(i) = '1' then
+            xgmii_rx_upctrl_d3(i*8+7 downto i*8) <= xgmii_rx_upctrl_d2(i*8+7 downto i*8);
+        else
+            xgmii_rx_upctrl_d3(i*8+7 downto i*8) <= X"FF";
+        end if;
+    end if;
+end process;
+end generate xgmii2uart_gen;
+Up_req <= Up_req_buf;
+Up_ReadLength_i <= Up_ReadLength(10 downto 0) when Up_req_buf(0) = '1' else Up_ReadLength(21 downto 11);
+Up_ReadData_i <= Up_ReadData(7 downto 0) when port0_using = '1' else Up_ReadData(15 downto 8);
+process(sysclk)
+begin
+    if rising_edge(sysclk) then
+        if Up_ack(0) = '1' then
+            port0_using <= '1';
+        elsif Up_ack(1) = '1' then
+            port0_using <= '0';
+        end if;
+    end if;
+end process;
+
+end beha;

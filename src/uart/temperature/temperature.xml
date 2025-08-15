@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2020.05.09.14:33:10"
+ outputDirectory="F:/hk/Z8_NEW/Z8_boardout_init/src/uart/temperature/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Arria 10"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="10AX027H4F34E3SG"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="3"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="corectl" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="corectl" direction="input" role="corectl" width="1" />
+  </interface>
+  <interface name="reset" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="reset" direction="input" role="reset" width="1" />
+  </interface>
+  <interface name="tempout" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="tempout" direction="output" role="tempout" width="10" />
+  </interface>
+  <interface name="eoc" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="eoc" direction="output" role="eoc" width="1" />
+  </interface>
+ </perimeter>
+ <entity kind="temperature" version="1.0" name="temperature">
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="10AX027H4F34E3SG" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="3" />
+  <generatedFiles>
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\synth\temperature.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\synth\temperature.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file path="F:/hk/Z8_NEW/Z8_boardout_init/src/uart/temperature.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="G:/intelfpga_pro/18.1/ip/altera/altera_temp_sense/altera_temp_sense_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="temperature">"Generating: temperature"</message>
+   <message level="Info" culprit="temperature">"Generating: altera_temp_sense"</message>
+   <message level="Info" culprit="temp_sense_0">Generating top-level entity altera_temp_sense.</message>
+  </messages>
+ </entity>
+ <entity kind="altera_temp_sense" version="18.1" name="altera_temp_sense">
+  <parameter name="CE_CHECK" value="false" />
+  <parameter name="NUMBER_OF_SAMPLES" value="128" />
+  <parameter name="CLOCK_DIVIDER_ENABLE" value="off" />
+  <parameter name="USE_WYS" value="on" />
+  <parameter name="DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="SIM_TSDCALO" value="0" />
+  <parameter name="POI_CAL_TEMPERATURE" value="85" />
+  <parameter name="USER_OFFSET_ENABLE" value="off" />
+  <parameter name="CLK_FREQUENCY" value="1.0" />
+  <parameter name="CBX_AUTO_BLACKBOX" value="ALL" />
+  <parameter name="CLR_CHECK" value="false" />
+  <parameter name="CLOCK_DIVIDER_VALUE" value="40" />
+  <generatedFiles>
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\altera_temp_sense_181\synth\altera_temp_sense.v"
+       attributes="" />
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\altera_temp_sense_181\synth\altera_temp_sense.sdc"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\altera_temp_sense_181\synth\altera_temp_sense.v"
+       attributes="" />
+   <file
+       path="F:\hk\Z8_NEW\Z8_boardout_init\src\uart\temperature\altera_temp_sense_181\synth\altera_temp_sense.sdc"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="G:/intelfpga_pro/18.1/ip/altera/altera_temp_sense/altera_temp_sense_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="temperature" as="temp_sense_0" />
+  <messages>
+   <message level="Info" culprit="temperature">"Generating: altera_temp_sense"</message>
+   <message level="Info" culprit="temp_sense_0">Generating top-level entity altera_temp_sense.</message>
+  </messages>
+ </entity>
+</deploy>

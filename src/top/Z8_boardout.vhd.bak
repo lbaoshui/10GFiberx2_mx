@@ -1,0 +1,800 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+entity Z8_boardout is
+generic
+(
+    CONS_VER_HIGH       : std_logic_vector := X"00";
+    CONS_VER_LOW        : std_logic_vector := X"50";
+    TXSUBCARD_TYPE      : std_logic_vector := X"80";
+    PORT_NUM            : integer := 2;
+    SERDES_SPEED_MSB    : integer := 10;
+    SERDES_SPEED_LSB    : integer := 0;
+    BAUD_DIV            : std_logic_vector := X"000B";
+    SERDES_5G_EN        : std_logic := '0';
+    SERDES_10G_EN       : std_logic := '1';
+    HSSI_NUM            : integer := 2;
+    HSSI_NUM5G          : integer := 4
+);
+port
+(
+    --CLKUSR                      : in  std_logic;
+    clkin_156M_5g               : in  std_logic;
+    clkin_156M_sfp              : in  std_logic;
+    clkin_125M                  : in  std_logic;
+
+    led                         : out std_logic_vector(1 downto 0);
+    rxd_frmbk                   : in  std_logic;
+    txd_tobk                    : out std_logic;
+    txd_info                    : out std_logic;
+
+    --PHYAB_RESET                 : out   std_logic ;
+    --PHYAB_MDC                   : out   std_logic ;
+    --PHYAB_MDIO                  : inout std_logic ;
+    --PHYCD_RESET                 : out   std_logic ;
+    --PHYCD_MDC                   : out   std_logic ;
+    --PHYCD_MDIO                  : inout std_logic ;
+    --tx_serial_5gdata            : out   std_logic_vector (HSSI_NUM5G-1 downto 0);
+    --rx_serial_5gdata            : in    std_logic_vector (HSSI_NUM5G-1 downto 0);
+
+    rx_serial_data              : in std_logic_vector(HSSI_NUM-1 downto 0)  := (others => 'X');
+
+    tx_serial_sfpdata           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_serial_sfpdata           : in  std_logic_vector(HSSI_NUM-1 downto 0)   := (others => 'X')
+
+);
+end Z8_boardout;
+
+architecture behaviour of Z8_boardout is
+
+component vidout_net5G_top is
+generic
+(
+    HSSI_NUM5G    : INTEGER := 4
+);
+port
+(
+    clk125M_in              : IN    std_logic ;
+    clkin_5gsfp             : IN    std_logic ;
+    nRST                    : IN    std_logic ;
+
+    tx_parallel_data        : in  std_logic_vector(8*8*HSSI_NUM5G-1 downto 0);
+    tx_control              : in  std_logic_vector(8*HSSI_NUM5G-1 downto 0);
+    tx_clk                  : out std_logic;
+
+    rx_clk                  : out std_logic_vector(HSSI_NUM5G-1 downto 0);
+    rx_parallel_data        : out std_logic_vector(HSSI_NUM5G*8*8-1 downto 0);
+    rx_control              : out std_logic_vector(HSSI_NUM5G*8-1 downto 0);
+    eth_link_rxclk          : out std_logic_vector(HSSI_NUM5G-1 downto 0);
+
+    config_rdack            : in std_logic;
+    config_rdreq            : out std_logic;
+    config_rdaddr           : out std_logic_vector(24 downto 0);
+    config_rdlen            : out std_logic_vector(12 downto 0);
+    flash_dpram_data        : in std_logic_vector(31 downto 0);
+    flash_dpram_wraddr      : in std_logic_vector(8 downto 0);
+    flash_dpram_wren        : in std_logic;
+
+    PHYAB_RESET             : out   std_logic ;
+    PHYAB_MDC               : out   std_logic ;
+    PHYAB_MDIO              : inout std_logic ;
+    PHYCD_RESET             : out   std_logic ;
+    PHYCD_MDC               : out   std_logic ;
+    PHYCD_MDIO              : inout std_logic ;
+
+    tx_serial_5gdata          : out   std_logic_vector (HSSI_NUM5G-1 downto 0);
+    rx_serial_5gdata          : in    std_logic_vector (HSSI_NUM5G-1 downto 0)
+);
+end component;
+
+signal config_rdack            :  std_logic;
+signal config_rdreq            :  std_logic:='0';
+signal config_rdaddr           :  std_logic_vector(24 downto 0);
+signal config_rdlen            :  std_logic_vector(12 downto 0);
+signal flash_dpram_data        :  std_logic_vector(31 downto 0);
+signal flash_dpram_wraddr      :  std_logic_vector(8 downto 0);
+signal flash_dpram_wren        :  std_logic;
+
+signal tx_parallel_data_5g : std_logic_vector(8*8*HSSI_NUM5G-1 downto 0);
+signal tx_control_5g : std_logic_vector(8*HSSI_NUM5G-1 downto 0);
+signal tx_clk_5g : std_logic;
+signal rx_parallel_data_5g : std_logic_vector(8*8*HSSI_NUM5G-1 downto 0);
+signal rx_control_5g : std_logic_vector(8*HSSI_NUM5G-1 downto 0);
+signal rx_clk_5g : std_logic_vector(HSSI_NUM5G-1 downto 0);
+
+component main_pll is
+port (
+	rst      : in  std_logic := 'X'; -- reset
+	refclk   : in  std_logic := 'X'; -- clk
+	locked   : out std_logic;        -- export
+	outclk_0 : out std_logic         -- clk
+);
+end component main_pll;
+
+signal RST              : std_logic;
+signal led_cnt          : std_logic_vector(23 downto 0) := (others=>'0');
+signal main_pll_locked  : std_logic;
+signal sysclk           : std_logic := '0';
+
+component resetmodule is
+generic
+(
+    HSSI_NUM : integer
+);
+port
+(
+    sysclk              : in std_logic;
+    tx_clk              : in std_logic;
+    rx_clk0             : in std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_clk1             : in std_logic_vector(HSSI_NUM-1 downto 0);
+    pll_lock            : in std_logic;
+
+    nRST_sys            : out std_logic;
+    RST_sys             : out std_logic;
+    nRST_rxclk0         : out std_logic_vector(HSSI_NUM-1 downto 0);
+    nRST_rxclk1         : out std_logic_vector(HSSI_NUM-1 downto 0);
+    nRST_txclk          : out std_logic
+);
+end component;
+
+signal nRST_sys            : std_logic;
+signal RST_sys             : std_logic;
+signal nRST_rxclk0         : std_logic_vector(HSSI_NUM-1 downto 0);
+signal nRST_rxclk1         : std_logic_vector(HSSI_NUM-1 downto 0);
+signal nRST_sfptxclk       : std_logic;
+
+constant CLK_NUM : integer:=7;
+
+component multi_measure is
+generic
+(
+    CLK_NUM : integer := 10
+);
+port
+(
+    sysclk     : in  std_logic ;  --125M
+    nRST_sys   : in  std_logic ;
+    clk_set    : in  std_logic_vector(CLK_NUM-1 downto 0);
+    mask_out   : out std_logic := '0';
+    clk_cnt    : out std_logic_vector(CLK_NUM*32-1 downto 0)
+
+);
+end component;
+
+signal clk_set          : std_logic_vector(CLK_NUM-1 downto 0);
+
+component serdes_datain is
+generic
+(
+    HSSI_NUM : integer := 2
+);
+port
+(
+    reconfclk                   : in std_logic;
+    refclk                      : in std_logic;
+    rx_serial_data              : in std_logic_vector(HSSI_NUM-1 downto 0)  := (others => 'X');
+
+    rx_clk                      : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_parallel_data            : out std_logic_vector(HSSI_NUM*64-1 downto 0);
+    rx_control                  : out std_logic_vector(HSSI_NUM*8-1 downto 0);
+
+    rx_enh_data_valid           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_full            : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_empty           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_del             : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_insert          : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_highber              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_blk_lock             : out std_logic_vector(HSSI_NUM-1 downto 0);
+
+    phy_reset                   : in std_logic
+);
+end component;
+
+signal rx_clk                  :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_parallel_data        :   std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal rx_control              :   std_logic_vector(HSSI_NUM*8-1 downto 0);
+
+signal rx_enh_data_valid       :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_full        :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_empty       :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_del         :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_insert      :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_highber          :   std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_blk_lock         :   std_logic_vector(HSSI_NUM-1 downto 0);
+
+component serdes_dataout is
+generic
+(
+    HSSI_NUM : integer := 2
+);
+port
+(
+    reconfclk                   : in std_logic;
+    refclk                      : in std_logic;
+    tx_serial_sfpdata           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_serial_sfpdata          : in std_logic_vector(HSSI_NUM-1 downto 0)   := (others => 'X');
+
+    sfp_txclk                  : out std_logic;
+    xgmii_tx_data               : in std_logic_vector(HSSI_NUM*64-1 downto 0)  := (others => 'X');
+    xgmii_tx_ctrl               : in std_logic_vector(HSSI_NUM*8-1 downto 0)   := (others => 'X');
+
+    sfp_rxclk                   : out std_logic_vector(HSSI_NUM-1 downto 0);
+    xgmii_rx_data               : out std_logic_vector(HSSI_NUM*64-1 downto 0);
+    xgmii_rx_ctrl               : out std_logic_vector(HSSI_NUM*8-1 downto 0);
+
+
+    tx_enh_data_valid           : in std_logic_vector(HSSI_NUM-1 downto 0)   := (others => 'X');
+    tx_enh_fifo_full            : out std_logic_vector(HSSI_NUM-1 downto 0);
+    tx_enh_fifo_pfull           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    tx_enh_fifo_empty           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    tx_enh_fifo_pempty          : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_data_valid           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_full            : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_empty           : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_del             : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_fifo_insert          : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_highber              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    rx_enh_blk_lock             : out std_logic_vector(HSSI_NUM-1 downto 0);
+
+    phy_reset                   : in std_logic
+);
+end component;
+
+signal fiber_link                  : std_logic_vector(HSSI_NUM-1 downto 0);
+
+signal sfp_txclk                   : std_logic;
+signal xgmii_tx_data               : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_tx_ctrl               : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal sfp_rxclk                   : std_logic_vector(HSSI_NUM-1 downto 0);
+signal xgmii_rx_data               : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_rx_ctrl               : std_logic_vector(HSSI_NUM*8-1 downto 0);
+signal xgmii_rx_updata             : std_logic_vector(HSSI_NUM*64-1 downto 0);
+signal xgmii_rx_upctrl             : std_logic_vector(HSSI_NUM*8-1 downto 0);
+
+
+signal tx_enh_data_valid_sfp       : std_logic_vector(HSSI_NUM-1 downto 0) := (others => '1');
+signal tx_enh_fifo_full_sfp        : std_logic_vector(HSSI_NUM-1 downto 0);
+signal tx_enh_fifo_pfull_sfp       : std_logic_vector(HSSI_NUM-1 downto 0);
+signal tx_enh_fifo_empty_sfp       : std_logic_vector(HSSI_NUM-1 downto 0);
+signal tx_enh_fifo_pempty_sfp      : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_data_valid_sfp       : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_full_sfp        : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_empty_sfp       : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_del_sfp         : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_fifo_insert_sfp      : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_highber_sfp          : std_logic_vector(HSSI_NUM-1 downto 0);
+signal rx_enh_blk_lock_sfp         : std_logic_vector(HSSI_NUM-1 downto 0);
+
+component convto_xgmii_sfp is
+generic
+(
+    SERDES_5G_EN                    : std_logic := '1';
+    CURRENT_PORT                    : integer := 0
+);
+port
+(
+    nRST_rxclk                      : in std_logic;
+    rx_clk                          : in std_logic;
+    rx_parallel_data                : in std_logic_vector(63 downto 0);
+    rx_control                      : in std_logic_vector(7 downto 0);
+
+    nRST_txclk                      : in std_logic;
+    tx_clk                          : in std_logic;
+    xgmii_tx_data                   : out std_logic_vector(63 downto 0);
+    xgmii_tx_ctrl                   : out std_logic_vector(7 downto 0);
+    err_num                         : out std_logic_vector(31 downto 0)
+);
+end component;
+
+
+component uart_param_top is
+generic
+(
+    CONS_VER_HIGH       : std_logic_vector(7  downto 0);
+    CONS_VER_LOW        : std_logic_vector(7  downto 0);
+    TXSUBCARD_TYPE      : std_logic_vector(7  downto 0);
+    PORT_NUM            : integer;
+    SERDES_SPEED_MSB    : integer;
+    SERDES_SPEED_LSB    : integer;
+    BAUD_DIV            : std_logic_vector(15 downto 0);
+    HSSI_NUM            : integer:= 2
+);
+port
+(
+    nRST            : in std_logic ;
+    sysclk          : in std_logic;
+    ---uart: 2 pins of uart
+    rxd_top         : in  std_logic ;  --from top pad
+    txd_top         : out std_logic ; ---to top pad
+    txd_info_top    : out std_logic ; ---to top pad
+
+    --info
+    err_num         : in std_logic_vector(63 downto 0);
+    err_num_fiber   : in std_logic_vector(63 downto 0);
+    crc_info        : in std_logic_vector(7 downto 0);
+    eth_link        : in std_logic_vector(HSSI_NUM*10-1 downto 0);
+    fiber_link      : in std_logic_vector(HSSI_NUM-1 downto 0);
+
+    p_Frame_en_o    : out std_logic ;
+    p_Wren_o        : out std_logic ;
+    p_Data_o        : out std_logic_vector(7 downto 0);
+    p_Addr_o        : out std_logic_vector(10 downto 0);
+    cur_slot_num    : out std_logic_vector(15 downto 0);
+
+    Up_ReadEn_o         : out std_logic;
+    Up_req              : in  std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ack              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ReadLength_i     : in  std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : out std_logic_vector(10 downto 0);
+    Up_ReadData_i       : in  std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+);
+end component;
+signal err_num          : std_logic_vector(63 downto 0);
+
+signal Up_ReadEn_o      : std_logic;
+signal Up_req           : std_logic_vector(HSSI_NUM-1 downto 0);
+signal Up_ack           : std_logic_vector(HSSI_NUM-1 downto 0);
+signal Up_ReadLength_i  : std_logic_vector(10 downto 0);
+signal Up_ReadAddr_o    : std_logic_vector(10 downto 0);
+signal Up_ReadData_i    : std_logic_vector(7 downto 0);
+
+signal p_Frame_en_o     : std_logic;
+signal p_Wren_o         : std_logic;
+signal p_Data_o         : std_logic_vector(7 downto 0);
+signal p_Addr_o         : std_logic_vector(10 downto 0);
+signal cur_slot_num     : std_logic_vector(15 downto 0);
+signal crc_info         : std_logic_vector(7 downto 0) := (others => '0');
+
+component top_update is
+generic(
+    FLASH_PROTECT_EN                    : std_logic:= '1';
+
+    FRAME_W                             : integer:= 12;
+    FLASH_ADDR_W_INBYTE                 : integer:= 25;
+    FLASH_DATA_W                        : integer:= 32
+);
+port(
+    nRST                                : in  std_logic;
+    sysclk                              : in  std_logic;
+    time_ms_en                          : in  std_logic;
+    --para
+    pframe_ss                           : in  std_logic;
+    pwren                               : in  std_logic;
+    paddr                               : in  std_logic_vector(FRAME_W-1 downto 0);
+    pdata                               : in  std_logic_vector(7 downto 0);
+
+    config_rdack                        : out std_logic;
+    config_rdreq                        : in  std_logic;
+    config_rdaddr                       : in  std_logic_vector(24 downto 0);
+    config_rdlen                        : in  std_logic_vector(12 downto 0);
+    flash_dpram_data                    : out std_logic_vector(31 downto 0);
+    flash_dpram_wraddr                  : out std_logic_vector(8 downto 0);
+    flash_dpram_wren                    : out std_logic;
+
+    update_crc_right                    : out std_logic;
+    update_prog_done                    : out std_logic;
+    update_crc_done                     : out std_logic;
+    update_erase_done                   : out std_logic
+
+);
+end component;
+
+component uart_64to8 is
+generic
+(
+    HSSI_NUM            : integer:= 2
+);
+port
+(
+    nRST                : in  std_logic;
+    sysclk              : in  std_logic;
+    nRST_rxclk          : in  std_logic;
+    rxclk               : in  std_logic;
+    nRST_txclk          : in  std_logic;
+    txclk               : in  std_logic;
+    xgmii_tx_data       : in  std_logic_vector(HSSI_NUM*64-1 downto 0);
+    xgmii_tx_ctrl       : in  std_logic_vector(HSSI_NUM*8-1 downto 0);
+    xgmii_rx_updata     : in  std_logic_vector(HSSI_NUM*64-1 downto 0);
+    xgmii_rx_upctrl     : in  std_logic_vector(HSSI_NUM*8-1 downto 0);
+    cur_slot_num        : in  std_logic_vector(3 downto 0);
+
+    eth_link_sys            : out std_logic_vector(HSSI_NUM*10-1 downto 0);
+    err_num_fiber_sys       : out std_logic_vector(HSSI_NUM*32-1 downto 0);
+    subframe_FB         : out std_logic_vector(HSSI_NUM-1 downto 0);
+
+    Up_ack              : in  std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_req              : out std_logic_vector(HSSI_NUM-1 downto 0);
+    Up_ReadEn_o         : in  std_logic;
+    Up_ReadLength_i     : out std_logic_vector(10 downto 0);
+    Up_ReadAddr_o       : in  std_logic_vector(10 downto 0);
+    Up_ReadData_i       : out std_logic_vector(7 downto 0)  ---latency is 2 ,after Up_ReadAddr_o;
+
+);
+end component;
+
+signal subframe_FB      : std_logic_vector(HSSI_NUM-1 downto 0);
+signal subframe_FB_d1   : std_logic_vector(HSSI_NUM-1 downto 0 := (otheres=>'0');;
+signal subframe_FB_d2   : std_logic_vector(HSSI_NUM-1 downto 0 := (otheres=>'0');;
+signal subframe_FB_d3   : std_logic_vector(HSSI_NUM-1 downto 0 := (otheres=>'0');;
+signal dly_cnt          : std_logic_vector(HSSI_NUM*30-1 downto 0);
+signal eth_link_sys         : std_logic_vector(HSSI_NUM*10-1 downto 0);
+signal err_num_fiber_sys    : std_logic_vector(HSSI_NUM*32-1 downto 0);
+
+component time_ms_gen is
+generic
+(
+ IS_156M: integer := 0   --0: 125M 1 : 156M
+);
+port ( nRST         : in  std_logic  ;
+       clk          : in std_logic ;
+       time_ms_en_o : out std_logic
+     );
+end component;
+
+signal time_ms_en_125 : std_logic;
+
+component altclkctrl is
+port (
+    inclk  : in  std_logic := 'X'; -- inclk
+    outclk : out std_logic         -- outclk
+);
+end component altclkctrl;
+signal clk125M_in_groble : std_LOGIC;
+signal clk156M_in_groble : std_LOGIC;
+
+
+begin
+
+
+--main_pll_inst : main_pll
+--port map
+--(
+--	rst      => RST,        -- reset
+--	refclk   => clkin_156M,        -- clk
+--	locked   => main_pll_locked,        -- export
+--	outclk_0 => sysclk        -- clk
+--);
+sysclk <= clkin_125M;
+--altclkctrl_inst : altclkctrl
+--port map (
+--    inclk  => clkin_156M,  --  altclkctrl_input.inclk
+--    outclk => clk156M_in_groble  -- altclkctrl_output.outclk
+--);
+--clk156M_in_groble <= clkin_156M;
+
+resetmodule_inst : resetmodule
+generic map
+(
+    HSSI_NUM => HSSI_NUM
+)
+port map
+(
+    sysclk              => sysclk,
+    tx_clk              => sfp_txclk,
+    rx_clk0             => rx_clk,
+    rx_clk1             => sfp_rxclk,
+    pll_lock            => '1',
+
+    nRST_sys            => nRST_sys,
+    RST_sys             => RST_sys,
+    nRST_rxclk0         => nRST_rxclk0,
+    nRST_rxclk1         => nRST_rxclk1,
+    nRST_txclk          => nRST_sfptxclk
+);
+
+--clk_set <= clkin_125M&clkin_156M_sfp&clkin_156M_5g&rx_clk(1)&rx_clk(0)&sfp_txclk&tx_clk_5g;
+
+--multi_measure_inst : multi_measure
+--generic map
+--(
+--    CLK_NUM => CLK_NUM
+--)
+--port map
+--(
+--    sysclk     => sysclk,
+--    nRST_sys   => nRST_sys,
+--    clk_set    => clk_set,
+--    mask_out   => open,
+--    clk_cnt    => open
+
+--);
+
+serdes_datain_inst : serdes_datain
+generic map
+(
+    HSSI_NUM => HSSI_NUM
+)
+port map
+(
+    reconfclk                   => sysclk,
+    refclk                      => clkin_156M_sfp,
+    rx_serial_data              => rx_serial_data,
+
+    rx_clk                      => rx_clk,
+    rx_parallel_data            => rx_parallel_data,
+    rx_control                  => rx_control,
+
+    rx_enh_data_valid           => rx_enh_data_valid,
+    rx_enh_fifo_full            => rx_enh_fifo_full,
+    rx_enh_fifo_empty           => rx_enh_fifo_empty,
+    rx_enh_fifo_del             => rx_enh_fifo_del,
+    rx_enh_fifo_insert          => rx_enh_fifo_insert,
+    rx_enh_highber              => rx_enh_highber,
+    rx_enh_blk_lock             => rx_enh_blk_lock,
+
+    phy_reset                   => RST_sys
+);
+
+serdes_dataout_inst : serdes_dataout
+generic map
+(
+    HSSI_NUM => HSSI_NUM
+)
+port map
+(
+    reconfclk                   => sysclk,
+    refclk                      => clkin_156M_sfp,
+    tx_serial_sfpdata           => tx_serial_sfpdata,
+    rx_serial_sfpdata           => rx_serial_sfpdata,
+
+    sfp_txclk                  => sfp_txclk,
+    xgmii_tx_data               => xgmii_tx_data,
+    xgmii_tx_ctrl               => xgmii_tx_ctrl,
+
+    sfp_rxclk                  => sfp_rxclk,
+    xgmii_rx_data               => xgmii_rx_data,
+    xgmii_rx_ctrl               => xgmii_rx_ctrl,
+
+    tx_enh_data_valid           => tx_enh_data_valid_sfp,
+    tx_enh_fifo_full            => tx_enh_fifo_full_sfp,
+    tx_enh_fifo_pfull           => tx_enh_fifo_pfull_sfp,
+    tx_enh_fifo_empty           => tx_enh_fifo_empty_sfp,
+    tx_enh_fifo_pempty          => tx_enh_fifo_pempty_sfp,
+    rx_enh_data_valid           => rx_enh_data_valid_sfp,
+    rx_enh_fifo_full            => rx_enh_fifo_full_sfp,
+    rx_enh_fifo_empty           => rx_enh_fifo_empty_sfp,
+    rx_enh_fifo_del             => rx_enh_fifo_del_sfp,
+    rx_enh_fifo_insert          => rx_enh_fifo_insert_sfp,
+    rx_enh_highber              => rx_enh_highber_sfp,
+    rx_enh_blk_lock             => rx_enh_blk_lock_sfp,
+
+    phy_reset                   => RST_sys
+);
+
+convto_xgmii_sfp_generate : for i in  0 to HSSI_NUM-1 generate
+xgmii_down_inst : convto_xgmii_sfp
+generic map
+(
+    SERDES_5G_EN                    => SERDES_5G_EN,
+    CURRENT_PORT                    => i
+)
+port map
+(
+    nRST_rxclk                      => nRST_rxclk0(i),
+    rx_clk                          => rx_clk(i),
+    rx_parallel_data                => rx_parallel_data(64*i+63 downto 64*i),
+    rx_control                      => rx_control(8*i+7 downto 8*i),
+
+    nRST_txclk                      => nRST_sfptxclk,
+    tx_clk                          => sfp_txclk,
+    xgmii_tx_data                   => xgmii_tx_data(64*i+63 downto 64*i),
+    xgmii_tx_ctrl                   => xgmii_tx_ctrl(8*i+7 downto 8*i),
+    err_num                         => err_num(32*i+31 downto 32*i)
+);
+xgmii_up_inst : convto_xgmii_sfp
+generic map
+(
+    SERDES_5G_EN                    => '0',
+    CURRENT_PORT                    => i
+)
+port map
+(
+    nRST_rxclk                      => nRST_rxclk1(i),
+    rx_clk                          => sfp_rxclk(i),
+    rx_parallel_data                => xgmii_rx_data(64*i+63 downto 64*i),
+    rx_control                      => xgmii_rx_ctrl(8*i+7 downto 8*i),
+
+    nRST_txclk                      => nRST_rxclk1(0),
+    tx_clk                          => sfp_rxclk(0),
+    xgmii_tx_data                   => xgmii_rx_updata(64*i+63 downto 64*i),
+    xgmii_tx_ctrl                   => xgmii_rx_upctrl(8*i+7 downto 8*i),
+    err_num                         => open
+);
+
+end generate convto_xgmii_sfp_generate;
+
+process(sysclk,nRST_sys)
+begin
+    if nRST_sys = '0' then
+        led_cnt <= (others => '0');
+        led <= (others => '0');
+		subframe_FB_d1 <= (others=>'0');
+        subframe_FB_d2 <= (others=>'0');
+        subframe_FB_d3 <= (others=>'0');
+		
+    elsif rising_edge(sysclk) then
+        led_cnt <= led_cnt + '1';
+        subframe_FB_d1 <= subframe_FB;
+        subframe_FB_d2 <= subframe_FB_d1;
+        subframe_FB_d3 <= subframe_FB_d2;
+        for i in 0 to HSSI_NUM-1 loop
+            if subframe_FB_d3(i) = '1' then
+                dly_cnt(i*30+29 downto i*30) <= (others => '1');
+            elsif dly_cnt(i*30+29) = '1' then
+                dly_cnt(i*30+29 downto i*30) <= dly_cnt(i*30+29 downto i*30) - '1';
+            end if;
+            if dly_cnt(i*30+29) = '1' then
+                led(i) <= led_cnt(23);
+            else
+                led(i) <= '0';
+            end if;
+            fiber_link(i) <= dly_cnt(i*30+29);
+        end loop;
+    end if;
+end process;
+
+serdes_5g_gene: if SERDES_5G_EN = '1' generate
+--serdes_out_5g : vidout_net5G_top
+--generic map
+--(
+--    HSSI_NUM5G              => HSSI_NUM5G
+--)
+--port map
+--(
+--    clk125M_in              => sysclk,
+--    clkin_5gsfp             => clkin_156M_5g,
+--    nRST                    => nRST_sys,
+
+--    tx_parallel_data        => tx_parallel_data_5g,
+--    tx_control              => tx_control_5g,
+--    tx_clk                  => tx_clk_5g,
+
+--    rx_clk                  => rx_clk_5g,
+--    rx_parallel_data        => rx_parallel_data_5g,
+--    rx_control              => rx_control_5g,
+--    eth_link_rxclk          => eth_link_rxclk,
+
+--    config_rdack            => config_rdack,
+--    config_rdreq            => config_rdreq,
+--    config_rdaddr           => config_rdaddr,
+--    config_rdlen            => config_rdlen,
+--    flash_dpram_data        => flash_dpram_data,
+--    flash_dpram_wraddr      => flash_dpram_wraddr,
+--    flash_dpram_wren        => flash_dpram_wren,
+
+--    PHYAB_RESET             => PHYAB_RESET,
+--    PHYAB_MDC               => PHYAB_MDC,
+--    PHYAB_MDIO              => PHYAB_MDIO,
+--    PHYCD_RESET             => PHYCD_RESET,
+--    PHYCD_MDC               => PHYCD_MDC,
+--    PHYCD_MDIO              => PHYCD_MDIO,
+
+--    tx_serial_5gdata        => tx_serial_5gdata,
+--    rx_serial_5gdata        => rx_serial_5gdata
+--);
+end generate serdes_5g_gene;
+
+p_uart_inst : uart_param_top
+generic map
+(
+    CONS_VER_HIGH       => CONS_VER_HIGH,
+    CONS_VER_LOW        => CONS_VER_LOW,
+    TXSUBCARD_TYPE      => TXSUBCARD_TYPE,
+    PORT_NUM            => PORT_NUM,
+    SERDES_SPEED_MSB    => SERDES_SPEED_MSB,
+    SERDES_SPEED_LSB    => SERDES_SPEED_LSB,
+    BAUD_DIV            => BAUD_DIV,
+    HSSI_NUM            => HSSI_NUM
+)
+port map
+(
+    nRST                => nRST_sys,
+    sysclk              => sysclk,
+    ---uart: 2 pins of uart
+    rxd_top             => rxd_frmbk,
+    txd_top             => txd_tobk,
+    txd_info_top        => txd_info,
+
+    --info
+    err_num             => err_num,
+    err_num_fiber       => err_num_fiber,
+    crc_info            => crc_info,
+    eth_link            => eth_link,
+    fiber_link          => fiber_link,
+
+    p_Frame_en_o        => p_Frame_en_o,
+    p_Wren_o            => p_Wren_o,
+    p_Data_o            => p_Data_o,
+    p_Addr_o            => p_Addr_o,
+    cur_slot_num        => cur_slot_num,
+
+    Up_ReadEn_o         => Up_ReadEn_o,
+    Up_req              => Up_req,
+    Up_ack              => Up_ack,
+    Up_ReadLength_i     => Up_ReadLength_i,
+    Up_ReadAddr_o       => Up_ReadAddr_o,
+    Up_ReadData_i       => Up_ReadData_i
+
+);
+
+uart_64to8_inst : uart_64to8
+generic map
+(
+    HSSI_NUM            => HSSI_NUM
+)
+port map
+(
+    nRST                => nRST_sys,
+    sysclk              => sysclk,
+    nRST_rxclk          => nRST_rxclk1(0),
+    rxclk               => sfp_rxclk(0),
+    nRST_txclk          => nRST_sfptxclk,
+    txclk               => sfp_txclk,
+    xgmii_tx_data       => xgmii_tx_data,
+    xgmii_tx_ctrl       => xgmii_tx_ctrl,
+    xgmii_rx_updata     => xgmii_rx_updata,
+    xgmii_rx_upctrl     => xgmii_rx_upctrl,
+    cur_slot_num        => cur_slot_num(3 downto 0),
+
+    eth_link_sys            => eth_link_sys,
+    err_num_fiber_sys       => err_num_fiber_sys,
+    subframe_FB         => subframe_FB,
+
+    Up_ReadEn_o         => Up_ReadEn_o,
+    Up_req              => Up_req,
+    Up_ack              => Up_ack,
+    Up_ReadLength_i     => Up_ReadLength_i,
+    Up_ReadAddr_o       => Up_ReadAddr_o,
+    Up_ReadData_i       => Up_ReadData_i
+
+);
+
+top_update_inst : top_update
+generic map
+(
+    FLASH_PROTECT_EN    => '1',
+
+    FRAME_W             => 11,
+    FLASH_ADDR_W_INBYTE => 25,
+    FLASH_DATA_W        => 32
+)
+port map
+(
+    nRST                => nRST_sys,
+    sysclk              => sysclk,
+    time_ms_en          => time_ms_en_125,
+    --para
+    pframe_ss           => p_Frame_en_o,
+    pwren               => p_Wren_o,
+    paddr               => p_Addr_o,
+    pdata               => p_Data_o,
+
+    config_rdack        => config_rdack,
+    config_rdreq        => config_rdreq,
+    config_rdaddr       => config_rdaddr,
+    config_rdlen        => config_rdlen,
+    flash_dpram_data    => flash_dpram_data,
+    flash_dpram_wraddr  => flash_dpram_wraddr,
+    flash_dpram_wren    => flash_dpram_wren,
+
+    update_crc_right    => crc_info(0),
+    update_prog_done    => crc_info(1),
+    update_crc_done     => crc_info(2),
+    update_erase_done   => crc_info(4)
+);
+
+ms_g_125: time_ms_gen
+generic map
+(
+    IS_156M =>  0   --0: 125M 1 : 156M
+)
+port map(
+    nRST            => nRST_sys ,
+    clk             => sysclk ,
+    time_ms_en_o    => time_ms_en_125
+);
+
+
+end;

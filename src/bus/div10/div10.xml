@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2021.08.26.14:32:56"
+ outputDirectory="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/div10/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Arria 10"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="10AX115N4F45E3SG"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="3"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="lpm_divide_input" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="numer" direction="input" role="numer" width="16" />
+   <port name="denom" direction="input" role="denom" width="4" />
+   <port name="clock" direction="input" role="clock" width="1" />
+  </interface>
+  <interface name="lpm_divide_output" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="quotient" direction="output" role="quotient" width="16" />
+   <port name="remain" direction="output" role="remain" width="4" />
+  </interface>
+ </perimeter>
+ <entity kind="div10" version="1.0" name="div10">
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="10AX115N4F45E3SG" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="3" />
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\div10\synth\div10.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\div10\synth\div10.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/div10.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file
+       path="D:/quartus/ip/altera/megafunctions/lpm_divide/lpm_divide_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="div10">"Generating: div10"</message>
+   <message level="Info" culprit="div10">"Generating: div10_lpm_divide_181_wr7wgzi"</message>
+   <message level="Info" culprit="lpm_divide_0">Generating top-level entity div10_lpm_divide_181_wr7wgzi.</message>
+  </messages>
+ </entity>
+ <entity kind="lpm_divide" version="18.1" name="div10_lpm_divide_181_wr7wgzi">
+  <parameter name="GUI_MAXIMIZE_SPEED" value="Default Optimization" />
+  <parameter name="GUI_LPM_dREPRESENTATION" value="Unsigned" />
+  <parameter name="GUI_LPM_REMAINDERPOSITIVE" value="Yes" />
+  <parameter name="DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="GUI_LPM_WIDTHd" value="4" />
+  <parameter name="GUI_LPM_nREPRESENTATION" value="Unsigned" />
+  <parameter name="GUI_LPM_PIPELINE" value="10" />
+  <parameter name="GUI_USE_CLKEN" value="false" />
+  <parameter name="GUI_LPM_WIDTHn" value="16" />
+  <parameter name="GUI_USE_ACLR" value="false" />
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\div10\lpm_divide_181\synth\div10_lpm_divide_181_wr7wgzi.v"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\div10\lpm_divide_181\synth\div10_lpm_divide_181_wr7wgzi.v"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="D:/quartus/ip/altera/megafunctions/lpm_divide/lpm_divide_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="div10" as="lpm_divide_0" />
+  <messages>
+   <message level="Info" culprit="div10">"Generating: div10_lpm_divide_181_wr7wgzi"</message>
+   <message level="Info" culprit="lpm_divide_0">Generating top-level entity div10_lpm_divide_181_wr7wgzi.</message>
+  </messages>
+ </entity>
+</deploy>

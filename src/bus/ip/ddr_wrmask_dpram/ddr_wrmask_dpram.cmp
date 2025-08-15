@@ -1,0 +1,16 @@
+	component ddr_wrmask_dpram is
+		port (
+			data            : in  std_logic_vector(39 downto 0) := (others => 'X'); -- datain
+			q               : out std_logic_vector(39 downto 0);                    -- dataout
+			wraddress       : in  std_logic_vector(8 downto 0)  := (others => 'X'); -- wraddress
+			rdaddress       : in  std_logic_vector(8 downto 0)  := (others => 'X'); -- rdaddress
+			wren            : in  std_logic                     := 'X';             -- wren
+			wrclock         : in  std_logic                     := 'X';             -- clk
+			rdclock         : in  std_logic                     := 'X';             -- clk
+			rden            : in  std_logic                     := 'X';             -- rden
+			rd_addressstall : in  std_logic                     := 'X';             -- rd_addressstall
+			rdinclocken     : in  std_logic                     := 'X';             -- rdinclocken
+			rdoutclocken    : in  std_logic                     := 'X'              -- rdoutclocken
+		);
+	end component ddr_wrmask_dpram;
+

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deploy
+ date="2021.08.26.14:42:31"
+ outputDirectory="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/LPM_9x10/">
+ <perimeter>
+  <parameter
+     name="AUTO_GENERATION_ID"
+     type="Integer"
+     defaultValue="0"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_UNIQUE_ID"
+     type="String"
+     defaultValue=""
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_FAMILY"
+     type="String"
+     defaultValue="Arria 10"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE"
+     type="String"
+     defaultValue="10AX115N4F45E3SG"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_DEVICE_SPEEDGRADE"
+     type="String"
+     defaultValue="3"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_RATE"
+     type="Long"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_CLOCK_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <parameter
+     name="AUTO_CLOCK_RESET_DOMAIN"
+     type="Integer"
+     defaultValue="-1"
+     onHdl="0"
+     affectsHdl="1" />
+  <interface name="dataa" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="dataa" direction="input" role="dataa" width="10" />
+  </interface>
+  <interface name="result" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="result" direction="output" role="result" width="19" />
+  </interface>
+  <interface name="datab" kind="conduit" start="0">
+   <property name="associatedClock" value="" />
+   <property name="associatedReset" value="" />
+   <property name="prSafe" value="false" />
+   <port name="datab" direction="input" role="datab" width="9" />
+  </interface>
+  <interface name="clock" kind="clock" start="0">
+   <property name="clockRate" value="0" />
+   <property name="externallyDriven" value="false" />
+   <property name="ptfSchematicName" value="" />
+   <port name="clock" direction="input" role="clk" width="1" />
+  </interface>
+ </perimeter>
+ <entity kind="LPM_9x10" version="1.0" name="LPM_9x10">
+  <parameter name="AUTO_CLOCK_CLOCK_RATE" value="-1" />
+  <parameter name="AUTO_CLOCK_CLOCK_DOMAIN" value="-1" />
+  <parameter name="AUTO_CLOCK_RESET_DOMAIN" value="-1" />
+  <parameter name="AUTO_GENERATION_ID" value="0" />
+  <parameter name="AUTO_DEVICE" value="10AX115N4F45E3SG" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="AUTO_UNIQUE_ID" value="" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="3" />
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\LPM_9x10\synth\LPM_9x10.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\LPM_9x10\synth\LPM_9x10.v"
+       attributes="CONTAINS_INLINE_CONFIGURATION" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file
+       path="E:/work/z8/z8_bk/5g/Z8_BK_5g_2.30_20210818_testversion8/src/bus/LPM_9x10.ip" />
+  </sourceFiles>
+  <childSourceFiles>
+   <file path="D:/quartus/ip/altera/megafunctions/lpm_mult/lpm_mult_hw.tcl" />
+  </childSourceFiles>
+  <messages>
+   <message level="Info" culprit="LPM_9x10">"Generating: LPM_9x10"</message>
+   <message level="Info" culprit="LPM_9x10">"Generating: LPM_9x10_lpm_mult_181_s6qypzi"</message>
+  </messages>
+ </entity>
+ <entity kind="lpm_mult" version="18.1" name="LPM_9x10_lpm_mult_181_s6qypzi">
+  <parameter name="GUI_B_IS_CONSTANT" value="0" />
+  <parameter name="GUI_SIGNED_MULT" value="0" />
+  <parameter name="GUI_PIPELINE" value="1" />
+  <parameter name="GUI_RESULT_WIDTH" value="19" />
+  <parameter name="DEVICE_FAMILY" value="Arria 10" />
+  <parameter name="GUI_WIDTH_P" value="16" />
+  <parameter name="GUI_AUTO_SIZE_RESULT" value="1" />
+  <parameter name="GUI_IMPLEMENTATION" value="0" />
+  <parameter name="GUI_LATENCY" value="1" />
+  <parameter name="GUI_CLKEN" value="false" />
+  <parameter name="GUI_OPTIMIZE" value="1" />
+  <parameter name="GUI_CONSTANT_B" value="0" />
+  <parameter name="GUI_CLEAR_TYPE" value="NONE" />
+  <parameter name="GUI_WIDTH_A" value="10" />
+  <parameter name="GUI_WIDTH_B" value="9" />
+  <parameter name="GUI_USE_MULT" value="1" />
+  <generatedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\LPM_9x10\lpm_mult_181\synth\LPM_9x10_lpm_mult_181_s6qypzi.v"
+       attributes="" />
+  </generatedFiles>
+  <childGeneratedFiles>
+   <file
+       path="E:\work\z8\z8_bk\5g\Z8_BK_5g_2.30_20210818_testversion8\src\bus\LPM_9x10\lpm_mult_181\synth\LPM_9x10_lpm_mult_181_s6qypzi.v"
+       attributes="" />
+  </childGeneratedFiles>
+  <sourceFiles>
+   <file path="D:/quartus/ip/altera/megafunctions/lpm_mult/lpm_mult_hw.tcl" />
+  </sourceFiles>
+  <childSourceFiles/>
+  <instantiator instantiator="LPM_9x10" as="lpm_mult_0" />
+  <messages>
+   <message level="Info" culprit="LPM_9x10">"Generating: LPM_9x10_lpm_mult_181_s6qypzi"</message>
+  </messages>
+ </entity>
+</deploy>

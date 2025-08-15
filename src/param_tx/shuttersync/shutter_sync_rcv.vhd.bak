@@ -1,0 +1,303 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+use work.PCK_param_sched.all;
+
+
+entity shutter_sync_rcv is 
+generic 
+(  
+  UNIT_NUM     : INTEGER  := 2 ; --for fiber 2 or 4, for 5G 4 ;
+  ETH_PER_UNIT : INTEGER  := 2 ; --EVERY UNIT CONTAIN 1 ETH PORT FOR 5G ;  every unit contains 10 eth port for 10g;
+   D_AW        : INTEGER := 14 ;
+   D_DW        : INTEGER := 16;
+   TAB_AW      : INTEGER := 10 ;
+   TAB_DW      : INTEGER := 16 ;
+   POS_AW      : INTEGER := 11 ;
+   POS_DW      : INTEGER := 16  
+);
+port  
+(
+    nRST                  :  in  std_logic ;
+    clk                   :  in  std_logic ;
+    vsync_i               :  in  std_logic ; 
+    rttx_done_notify      :  in  std_logic_vector(UNIT_NUM-1 downto 0) ;  --after RT param is done ----
+   --pbus 
+    p_Frame_en_i          : in std_logic ;
+    p_Wren_i              : in std_logic ;
+    p_Data_i              : in std_logic_vector(7 downto 0);
+    p_Addr_i              : in std_logic_vector(10 downto 0); 
+    
+    shutter_enabe_o       : out  std_logic ;
+    sched_frmnum_o        : out  std_logic_vector(15 downto 0);
+    sched_SEGNUM_o        : out  std_logic_vector(15 downto 0);
+    pos_raddr             : in   std_logic_vector(POS_AW-1 downto 0);
+    pos_q                 : out  std_logic_vector(POS_DW-1 downto 0);
+    tab_q                 : out  std_logic_vector(TAB_DW-1 downto 0);
+    tab_raddr             : in   std_logic_vector(TAB_AW-1 downto 0);
+    d_raddr               : in   std_logic_vector( D_AW-1  downto 0);
+    d_q                   : out  std_logic_vector( D_DW-1  downto 0)  
+);
+end shutter_sync_rcv ;
+
+architecture beha of shutter_sync_rcv is 
+
+	component shuttersync_schedtable is
+		port (
+			data      : in  std_logic_vector(16 downto 0) := (others => 'X'); -- datain
+			q         : out std_logic_vector(16 downto 0);                    -- dataout
+			wraddress : in  std_logic_vector(9  downto 0)  := (others => 'X'); -- wraddress
+			rdaddress : in  std_logic_vector(9  downto 0)  := (others => 'X'); -- rdaddress
+			wren      : in  std_logic                     := 'X';             -- wren
+			clock     : in  std_logic                     := 'X'              -- clk
+		);
+	end component shuttersync_schedtable;
+    
+	component shuttersync_data16384x16 is
+		port (
+			data      : in  std_logic_vector(15 downto 0) := (others => 'X'); -- datain
+			q         : out std_logic_vector(15 downto 0);                    -- dataout
+			wraddress : in  std_logic_vector(13 downto 0) := (others => 'X'); -- wraddress
+			rdaddress : in  std_logic_vector(13 downto 0) := (others => 'X'); -- rdaddress
+			wren      : in  std_logic                     := 'X';             -- wren
+			clock     : in  std_logic                     := 'X'              -- clk
+		);
+	end component shuttersync_data16384x16;
+    
+   component shuttersync_ram_position is
+		port (
+			data      : in  std_logic_vector(15 downto 0) := (others => 'X'); -- datain
+			q         : out std_logic_vector(15 downto 0);                    -- dataout
+			wraddress : in  std_logic_vector(10 downto 0) := (others => 'X'); -- wraddress
+			rdaddress : in  std_logic_vector(10 downto 0) := (others => 'X'); -- rdaddress
+			wren      : in  std_logic                     := 'X';             -- wren
+			clock     : in  std_logic                     := 'X'              -- clk
+		);
+	end component shuttersync_ram_position;
+    
+  --bigger block ram 
+constant SHUTTER_SUBFT_ENABLE  : STD_LOGIC_VECTOR(7 DOWNTO 0):= X"00";
+constant SHUTTER_SUBFT_DATA    : STD_LOGIC_VECTOR(7 DOWNTO 0):= X"01";
+constant SHUTTER_SUBFT_SCHED   : STD_LOGIC_VECTOR(7 DOWNTO 0):= X"02";
+constant SHUTTER_SUBFT_POS     : STD_LOGIC_VECTOR(7 DOWNTO 0):= X"03"; 
+
+signal  hit_shutter     : std_logic := '0';
+signal  shutter_enable  : std_logic := '0';
+signal  d_enable        : std_logic := '0';
+
+CONSTANT POS_OFF  : INTEGER := 30 ; 
+CONSTANT TAB_OFF  : INTEGER := 30 ; 
+CONSTANT DATA_OFF : INTEGER := 26 ; 
+signal d_wren   : std_logic ;
+signal d_wdata  : std_logic_vector(D_DW-1 downto 0); 
+signal d_waddr  : std_logic_vector(D_AW-1 downto 0);
+
+signal tab_wren   : std_logic ;
+signal tab_wdata  : std_logic_vector(TAB_DW-1 downto 0);
+signal tab_waddr  : std_logic_vector(TAB_AW-1 downto 0);
+-- signal tab_q      : std_logic_vector(TAB_DW-1 downto 0);
+-- signal tab_raddr  : std_logic_vector(TAB_AW-1 downto 0);
+signal pos_wren   : std_logic ;
+signal pos_wdata  : std_logic_vector(POS_DW-1 downto 0);
+signal pos_waddr  : std_logic_vector(POS_AW-1 downto 0);
+-- signal pos_raddr  : std_logic_vector(POS_AW-1 downto 0);
+-- signal pos_q      : std_logic_vector(POS_DW-1 downto 0);
+signal hit_data   : std_logic ;
+signal hit_pos    : std_logic ;
+signal hit_table  : std_logic ;
+signal resid_flg  : std_logic ;
+signal last_byte  : std_logic ;
+signal data_offset: std_logic_vector(23 downto 0);
+signal data_len   : std_logic_vector(15 downto 0);
+signal subFrm_idx : std_logic_vector(15 downto 0);
+signal subFrm_total: std_logic_vector(15 downto 0); 
+signal subFrm_type : std_logic_vector( 7 downto 0); 
+signal sched_frmnum: std_logic_vector(15 downto 0); 
+signal sched_SEGNUM: std_logic_vector(15 downto 0); 
+
+  
+begin 
+     table_i:shuttersync_schedtable  
+		port map(
+			data     => tab_wdata,  
+			q        => tab_q,  
+			wraddress=> tab_waddr,  
+			rdaddress=> tab_raddr,  
+			wren     => tab_wren ,  
+			clock    => clk      
+		);
+        
+      pos_i:shuttersync_ram_position  
+		port map(
+			data     => pos_wdata,  
+			q        => pos_q,  
+			wraddress=> pos_waddr,  
+			rdaddress=> pos_raddr,  
+			wren     => pos_wren ,  
+			clock    => clk      
+		);
+    
+	 data_i:  shuttersync_data16384x16  --data ram 
+		port  map(
+			data       => d_wdata,
+			q          => d_q,
+			wraddress  => d_waddr,
+			rdaddress  => d_raddr,
+			wren       => d_wren ,
+			clock      => clk    
+		); 
+        
+        
+   process(nRST,clk)
+   begin 
+       if nRST = '0' then 
+       
+       elsif rising_edge(clk) then 
+       
+       end if;   
+   end process;
+   
+   shutter_enabe_o <= shutter_enable ;
+   sched_frmnum_o  <= sched_frmnum ;
+   sched_SEGNUM_o  <= sched_SEGNUM ;
+
+   process(nRST,clk)
+   begin 
+       if nRST = '0' then
+          shutter_enable <= '0';  ---enable : 1 
+          d_enable       <= '0';
+          last_byte      <= '0';
+          sched_SEGNUM   <= (others=>'0');
+          sched_frmnum   <= (others=>'0');
+       elsif rising_edge(clk) then 
+           d_enable  <= shutter_enable ;
+           last_byte <= '0';
+           if p_Frame_en_i = '1' then 
+                 if p_Wren_i = '1' and p_Addr_i = 0 and p_Data_i = FT_RT_SHUTTER then 
+                       hit_shutter <= '1';
+                 else 
+                       hit_shutter <= '0';
+                 end if; 
+                 
+                 if p_Wren_i = '1' and hit_shutter = '1' then
+                     case (conv_integer(p_Addr_i) ) is 
+                         when   7 =>   subFrm_type                  <= p_Data_i; 
+                         when   8 =>   subFrm_total (7 downto 0)    <= p_Data_i; 
+                         when   9 =>   subFrm_total (15 downto 8)   <= p_Data_i;
+                         when  10 =>   subFrm_idx   (7  downto 0)   <= p_Data_i ;
+                         when  11 =>   subFrm_idx   (15 downto 8)   <= p_Data_i ;
+                         when  16 =>   data_len     ( 7  downto 0)  <= p_Data_i;
+                         when  17 =>   data_len     (15 downto 8)   <= p_Data_i;
+                         when  22 =>   data_offset  ( 7  downto 0)  <= p_Data_i ;  --data offset is aligned to 32 at least 
+                         when  23 =>   data_offset  (15  downto 8)  <= p_Data_i ;
+                         when  24 =>   data_offset  (23  downto 16) <= p_Data_i ;
+                         when  25 =>   null ;
+                         when  26 => if(hit_table = '1') then sched_frmnum( 7 downto 0) <= p_Data_i ; end if;
+                         when  27 => if(hit_table = '1') then sched_frmnum(15 downto 8) <= p_Data_i ; end if;
+                         when  28 => if(hit_table = '1') then sched_SEGNUM( 7 downto 0) <= p_Data_i ; end if;
+                         when  29 => if(hit_table = '1') then sched_SEGNUM(15 downto 8) <= p_Data_i ; end if;                         
+                         when others=>null;
+                     end case;
+                 end if;
+                 if p_Wren_i = '1' and p_Addr_i = (data_len +18 - 2) and p_Addr_i >= 22 then 
+                       last_byte <= '1';
+                  else 
+                       last_byte <= '0';
+                 end if;
+                          
+                 if p_Wren_i = '1' and p_Addr_i = 26 and hit_shutter = '1' then
+                       if subFrm_type = SHUTTER_SUBFT_ENABLE then 
+                             shutter_enable <= p_Data_i(0);
+                       end if;
+                 end if;                                 
+           end if; 
+           if hit_shutter = '1' and subFrm_type = SHUTTER_SUBFT_DATA   then hit_data  <= '1' ; else hit_data   <= '0'; end if;
+           if hit_shutter = '1' and subFrm_type = SHUTTER_SUBFT_POS    then hit_pos   <= '1' ; else hit_pos    <= '0'; end if;
+           if hit_shutter = '1' and subFrm_type = SHUTTER_SUBFT_SCHED  then hit_table <= '1' ; else hit_table  <= '0'; end if;
+       end if;
+   end process;
+   
+   drecv: process(nRST,clk)
+   begin 
+       if nRST = '0' then
+            d_wren    <= '0';
+            d_waddr   <= (others=>'0');
+            resid_flg <= '0';
+       elsif rising_edge(clk) then 
+            d_waddr <= data_offset(D_AW downto 1) + p_Addr_i(10 downto 1) - (DATA_OFF/2); --- data from 26 offset f 
+            IF p_Frame_en_i = '1'   and p_Wren_i = '1' and hit_data = '1' then 
+                if p_Addr_i(0) = '0' then 
+                    d_wdata(7 downto 0)  <= p_Data_i;
+                else 
+                    d_wdata(15 downto 8) <= p_Data_i;
+                end if;
+            end if;
+            if p_Frame_en_i = '1'  and p_Wren_i = '1' and hit_data = '1' and (p_Addr_i >= DATA_OFF ) then 
+                if  (p_Addr_i(0) = '1') or last_byte = '1' then 
+                     d_wren    <= '1';
+                     resid_flg <= '0';
+                else 
+                     d_wren    <= '0';
+                     resid_flg <= '1';
+                end if;
+           else 
+               d_wren    <= '0';
+               resid_flg <= '0';
+           end if;
+       end if;
+  end process;
+  
+  process(nRST,clk)
+   begin 
+       if nRST = '0' then
+            tab_wren    <= '0';
+            tab_waddr   <= (others=>'0'); 
+       elsif rising_edge(clk) then 
+            tab_waddr <= data_offset(TAB_AW downto 1) + p_Addr_i(10 downto 1) - (TAB_OFF/2); --- data from 26 offset f 
+            IF p_Frame_en_i = '1'    and p_Wren_i = '1' and hit_table = '1' then 
+                if p_Addr_i(0) = '0' then 
+                    tab_wdata(7 downto 0)  <= p_Data_i;
+                else 
+                    tab_wdata(15 downto 8) <= p_Data_i;
+                end if;
+            end if;
+            if p_Frame_en_i = '1'    and p_Wren_i = '1' and hit_table = '1' and (p_Addr_i >= TAB_OFF ) then 
+                if  (p_Addr_i(0) = '1') or last_byte = '1' then 
+                     tab_wren    <= '1'; 
+                else 
+                     tab_wren    <= '0'; 
+                end if;
+           else 
+               tab_wren    <= '0'; 
+           end if;
+       end if;
+  end process;
+  
+   process(nRST,clk)
+   begin 
+       if nRST = '0' then
+            pos_wren    <= '0';
+            pos_waddr   <= (others=>'0'); 
+       elsif rising_edge(clk) then 
+            pos_waddr <= data_offset(POS_AW downto 1) + p_Addr_i(10 downto 1) - (POS_OFF/2); --- data from 26 offset f 
+            IF p_Frame_en_i = '1'    and p_Wren_i = '1' and hit_pos = '1' then 
+                if p_Addr_i(0) = '0' then 
+                    pos_wdata(7 downto 0)  <= p_Data_i;
+                else 
+                    pos_wdata(15 downto 8) <= p_Data_i;
+                end if;
+            end if;
+            if p_Frame_en_i = '1'    and p_Wren_i = '1' and hit_pos = '1' and (p_Addr_i >= POS_OFF ) then 
+                if  (p_Addr_i(0) = '1') or last_byte = '1' then 
+                     pos_wren    <= '1'; 
+                else 
+                     pos_wren    <= '0'; 
+                end if;
+           else 
+               pos_wren    <= '0'; 
+           end if;
+       end if;
+  end process;
+
+end beha ;

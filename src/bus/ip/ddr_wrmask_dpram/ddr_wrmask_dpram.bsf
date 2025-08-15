@@ -1,0 +1,158 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 2018  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 336 464)
+	(text "ddr_wrmask_dpram" (rect 109 -1 191 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 448 20 460)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "data[39..0]" (rect 0 0 41 12)(font "Arial" (font_size 8)))
+		(text "data[39..0]" (rect 4 61 70 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 112 72)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "wraddress[8..0]" (rect 0 0 61 12)(font "Arial" (font_size 8)))
+		(text "wraddress[8..0]" (rect 4 101 94 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 112 112)(line_width 3))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "rdaddress[8..0]" (rect 0 0 60 12)(font "Arial" (font_size 8)))
+		(text "rdaddress[8..0]" (rect 4 141 94 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 112 152)(line_width 3))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "wren" (rect 0 0 18 12)(font "Arial" (font_size 8)))
+		(text "wren" (rect 4 181 28 192)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 112 192)(line_width 1))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "wrclock" (rect 0 0 29 12)(font "Arial" (font_size 8)))
+		(text "wrclock" (rect 4 221 46 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 112 232)(line_width 1))
+	)
+	(port
+		(pt 0 272)
+		(input)
+		(text "rdclock" (rect 0 0 28 12)(font "Arial" (font_size 8)))
+		(text "rdclock" (rect 4 261 46 272)(font "Arial" (font_size 8)))
+		(line (pt 0 272)(pt 112 272)(line_width 1))
+	)
+	(port
+		(pt 0 312)
+		(input)
+		(text "rden" (rect 0 0 17 12)(font "Arial" (font_size 8)))
+		(text "rden" (rect 4 301 28 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 112 312)(line_width 1))
+	)
+	(port
+		(pt 0 352)
+		(input)
+		(text "rd_addressstall" (rect 0 0 60 12)(font "Arial" (font_size 8)))
+		(text "rd_addressstall" (rect 4 341 94 352)(font "Arial" (font_size 8)))
+		(line (pt 0 352)(pt 112 352)(line_width 1))
+	)
+	(port
+		(pt 0 392)
+		(input)
+		(text "rdinclocken" (rect 0 0 43 12)(font "Arial" (font_size 8)))
+		(text "rdinclocken" (rect 4 381 70 392)(font "Arial" (font_size 8)))
+		(line (pt 0 392)(pt 112 392)(line_width 1))
+	)
+	(port
+		(pt 0 432)
+		(input)
+		(text "rdoutclocken" (rect 0 0 49 12)(font "Arial" (font_size 8)))
+		(text "rdoutclocken" (rect 4 421 76 432)(font "Arial" (font_size 8)))
+		(line (pt 0 432)(pt 112 432)(line_width 1))
+	)
+	(port
+		(pt 336 72)
+		(output)
+		(text "q[39..0]" (rect 0 0 29 12)(font "Arial" (font_size 8)))
+		(text "q[39..0]" (rect 298 61 346 72)(font "Arial" (font_size 8)))
+		(line (pt 336 72)(pt 224 72)(line_width 3))
+	)
+	(drawing
+		(text "data" (rect 88 43 200 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "datain" (rect 117 67 270 144)(font "Arial" (color 0 0 0)))
+		(text "q" (rect 225 43 456 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "dataout" (rect 190 67 422 144)(font "Arial" (color 0 0 0)))
+		(text "wraddress" (rect 51 83 156 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "wraddress" (rect 117 107 288 224)(font "Arial" (color 0 0 0)))
+		(text "rdaddress" (rect 54 123 162 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rdaddress" (rect 117 147 288 304)(font "Arial" (color 0 0 0)))
+		(text "wren" (rect 84 163 192 339)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "wren" (rect 117 187 258 384)(font "Arial" (color 0 0 0)))
+		(text "wrclock" (rect 69 203 180 419)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 117 227 252 464)(font "Arial" (color 0 0 0)))
+		(text "rdclock" (rect 72 243 186 499)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 117 267 252 544)(font "Arial" (color 0 0 0)))
+		(text "rden" (rect 87 283 198 579)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rden" (rect 117 307 258 624)(font "Arial" (color 0 0 0)))
+		(text "rd_addressstall" (rect 22 323 134 659)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rd_addressstall" (rect 117 347 324 704)(font "Arial" (color 0 0 0)))
+		(text "rdinclocken" (rect 48 363 162 739)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rdinclocken" (rect 117 387 300 784)(font "Arial" (color 0 0 0)))
+		(text "rdoutclocken" (rect 40 403 152 819)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rdoutclocken" (rect 117 427 306 864)(font "Arial" (color 0 0 0)))
+		(text " ddr_wrmask_dpram " (rect 247 448 602 906)(font "Arial" ))
+		(line (pt 112 32)(pt 224 32)(line_width 1))
+		(line (pt 224 32)(pt 224 448)(line_width 1))
+		(line (pt 112 448)(pt 224 448)(line_width 1))
+		(line (pt 112 32)(pt 112 448)(line_width 1))
+		(line (pt 113 52)(pt 113 76)(line_width 1))
+		(line (pt 114 52)(pt 114 76)(line_width 1))
+		(line (pt 223 52)(pt 223 76)(line_width 1))
+		(line (pt 222 52)(pt 222 76)(line_width 1))
+		(line (pt 113 92)(pt 113 116)(line_width 1))
+		(line (pt 114 92)(pt 114 116)(line_width 1))
+		(line (pt 113 132)(pt 113 156)(line_width 1))
+		(line (pt 114 132)(pt 114 156)(line_width 1))
+		(line (pt 113 172)(pt 113 196)(line_width 1))
+		(line (pt 114 172)(pt 114 196)(line_width 1))
+		(line (pt 113 212)(pt 113 236)(line_width 1))
+		(line (pt 114 212)(pt 114 236)(line_width 1))
+		(line (pt 113 252)(pt 113 276)(line_width 1))
+		(line (pt 114 252)(pt 114 276)(line_width 1))
+		(line (pt 113 292)(pt 113 316)(line_width 1))
+		(line (pt 114 292)(pt 114 316)(line_width 1))
+		(line (pt 113 332)(pt 113 356)(line_width 1))
+		(line (pt 114 332)(pt 114 356)(line_width 1))
+		(line (pt 113 372)(pt 113 396)(line_width 1))
+		(line (pt 114 372)(pt 114 396)(line_width 1))
+		(line (pt 113 412)(pt 113 436)(line_width 1))
+		(line (pt 114 412)(pt 114 436)(line_width 1))
+		(line (pt 0 0)(pt 336 0)(line_width 1))
+		(line (pt 336 0)(pt 336 464)(line_width 1))
+		(line (pt 0 464)(pt 336 464)(line_width 1))
+		(line (pt 0 0)(pt 0 464)(line_width 1))
+	)
+)

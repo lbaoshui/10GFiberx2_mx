@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file
+   path="intel_generic_serial_flash_interface_csr_181/sim/intel_generic_serial_flash_interface_csr.sv"
+   type="SYSTEM_VERILOG"
+   library="intel_generic_serial_flash_interface_csr_181" />
+ <file
+   path="altera_avalon_sc_fifo_181/sim/generic_spi_flash_altera_avalon_sc_fifo_181_hseo73i.v"
+   type="VERILOG"
+   library="altera_avalon_sc_fifo_181" />
+ <file
+   path="intel_generic_serial_flash_interface_xip_181/sim/avst_fifo.vhd"
+   type="VHDL"
+   library="intel_generic_serial_flash_interface_xip_181"
+   hasInlineConfiguration="true" />
+ <file
+   path="intel_generic_serial_flash_interface_xip_181/sim/generic_spi_flash_intel_generic_serial_flash_interface_xip_181_mdszy4q.sv"
+   type="SYSTEM_VERILOG"
+   library="intel_generic_serial_flash_interface_xip_181" />
+ <file
+   path="intel_generic_serial_flash_interface_addr_181/sim/intel_generic_serial_flash_interface_addr.sv"
+   type="SYSTEM_VERILOG"
+   library="intel_generic_serial_flash_interface_addr_181" />
+ <file
+   path="altera_merlin_demultiplexer_181/sim/generic_spi_flash_altera_merlin_demultiplexer_181_hnib7fa.sv"
+   type="SYSTEM_VERILOG"
+   library="altera_merlin_demultiplexer_181" />
+ <file
+   path="altera_merlin_multiplexer_181/sim/generic_spi_flash_altera_merlin_multiplexer_181_x7wtypi.sv"
+   type="SYSTEM_VERILOG"
+   library="altera_merlin_multiplexer_181" />
+ <file
+   path="altera_merlin_multiplexer_181/sim/altera_merlin_arbitrator.sv"
+   type="SYSTEM_VERILOG"
+   library="altera_merlin_multiplexer_181" />
+ <file
+   path="intel_generic_serial_flash_interface_cmd_181/sim/intel_generic_serial_flash_interface_cmd.sv"
+   type="SYSTEM_VERILOG"
+   library="intel_generic_serial_flash_interface_cmd_181" />
+ <file
+   path="altera_merlin_multiplexer_181/sim/generic_spi_flash_altera_merlin_multiplexer_181_bacy55i.sv"
+   type="SYSTEM_VERILOG"
+   library="altera_merlin_multiplexer_181" />
+ <file
+   path="altera_merlin_multiplexer_181/sim/altera_merlin_arbitrator.sv"
+   type="SYSTEM_VERILOG"
+   library="altera_merlin_multiplexer_181" />
+ <file
+   path="intel_generic_serial_flash_interface_if_ctrl_181/sim/qspi_inf_mux.vhd"
+   type="VHDL"
+   library="intel_generic_serial_flash_interface_if_ctrl_181"
+   hasInlineConfiguration="true" />
+ <file
+   path="intel_generic_serial_flash_interface_if_ctrl_181/sim/inf_sc_fifo_ser_data.vhd"
+   type="VHDL"
+   library="intel_generic_serial_flash_interface_if_ctrl_181"
+   hasInlineConfiguration="true" />
+ <file
+   path="intel_generic_serial_flash_interface_if_ctrl_181/sim/intel_generic_serial_flash_interface_asmiblock.sv"
+   type="VERILOG"
+   library="intel_generic_serial_flash_interface_if_ctrl_181" />
+ <file
+   path="intel_generic_serial_flash_interface_if_ctrl_181/sim/generic_spi_flash_intel_generic_serial_flash_interface_if_ctrl_181_kygc6zi.sv"
+   type="SYSTEM_VERILOG"
+   library="intel_generic_serial_flash_interface_if_ctrl_181" />
+ <file
+   path="altera_reset_controller_181/sim/mentor/altera_reset_controller.v"
+   type="VERILOG_ENCRYPT"
+   library="altera_reset_controller_181"
+   simulator="modelsim" />
+ <file
+   path="altera_reset_controller_181/sim/mentor/altera_reset_synchronizer.v"
+   type="VERILOG_ENCRYPT"
+   library="altera_reset_controller_181"
+   simulator="modelsim" />
+ <file
+   path="altera_reset_controller_181/sim/aldec/altera_reset_controller.v"
+   type="VERILOG_ENCRYPT"
+   library="altera_reset_controller_181"
+   simulator="riviera" />
+ <file
+   path="altera_reset_controller_181/sim/aldec/altera_reset_synchronizer.v"
+   type="VERILOG_ENCRYPT"
+   library="altera_reset_controller_181"
+   simulator="riviera" />
+ <file
+   path="intel_generic_serial_flash_interface_top_181/sim/generic_spi_flash_intel_generic_serial_flash_interface_top_181_zqmrk7a.vhd"
+   type="VHDL"
+   library="intel_generic_serial_flash_interface_top_181"
+   hasInlineConfiguration="true" />
+ <file
+   path="sim/generic_spi_flash.vhd"
+   type="VHDL"
+   library="generic_spi_flash"
+   hasInlineConfiguration="true" />
+ <topLevel name="generic_spi_flash.generic_spi_flash" />
+ <deviceFamily name="arria10" />
+</simPackage>

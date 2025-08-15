@@ -1,0 +1,298 @@
+
+
+library ieee ;
+use ieee.std_logic_1164.all ;
+use ieee.std_logic_arith.all ;
+use ieee.std_logic_unsigned.all ;
+
+entity uart_info is
+generic
+(
+    CONS_VER_HIGH       : std_logic_vector(7  downto 0);
+    CONS_VER_LOW        : std_logic_vector(7  downto 0);
+    TXSUBCARD_TYPE      : std_logic_vector(7  downto 0);
+    FIBERPORT_NUM       : integer; --FIBER PORT NUM 
+    ETHPORT_NUM         : integer; --ETH PORT PER FIBER  
+    SERDES_SPEED_MSB    : integer;
+    SERDES_SPEED_LSB    : integer;
+    BAUD_DIV            : std_logic_vector(15 downto 0)
+);
+port
+(
+    nRST                : in std_logic ;
+    sysclk              : in std_logic ;
+    txd_info_top        : out std_logic ; ---to top pad
+    eth_link            : in std_logic_vector(FIBERPORT_NUM*ETHPORT_NUM-1 downto 0);
+    fiber_link          : in std_logic_vector(FIBERPORT_NUM-1 downto 0);
+   
+    autobright_en       : in std_logic_vector(HSSI_NUM*ETHPORT_NUM-1 downto 0);
+    autobright_val      : in std_logic_vector(HSSI_NUM*ETHPORT_NUM*8-1 downto 0);
+  
+    err_num_fiber       : in std_logic_vector(63 downto 0);
+    err_num             : in std_logic_vector(63 downto 0);
+    crc_info            : in std_logic_vector(7 downto 0)
+);
+end uart_info ;
+
+architecture beha of uart_info IS
+
+component temperature is
+    port (
+        corectl : in  std_logic                    := 'X'; -- corectl
+        reset   : in  std_logic                    := 'X';
+        tempout : out std_logic_vector(9 downto 0);        -- tempout
+        eoc     : out std_logic                            -- eoc
+    );
+end component temperature;
+signal temper : std_logic_vector(9 downto 0);
+signal temper_d1 : std_logic_vector(9 downto 0);
+signal temper_d2 : std_logic_vector(9 downto 0);
+signal temper_out : std_logic_vector(9 downto 0);
+signal temper_eoc_falling : std_logic;
+signal temper_eoc_d1 : std_logic;
+signal temper_eoc_d2 : std_logic;
+signal temper_eoc_d3 : std_logic;
+signal temper_eoc_d4 : std_logic;
+signal temper_eoc : std_logic;
+signal tem_rst : std_logic;
+
+signal tx_uart_busy    : std_logic;
+signal txd_en          : std_logic;
+signal txd_data        : std_logic_vector(7 downto 0);
+
+signal rxd_data        : std_logic_vector(7 downto 0);
+signal rxd_en          : std_logic;
+
+signal fwd_cnt         : std_logic_vector(7 downto 0);
+signal tx_cnt             : std_logic_vector(3 downto 0);
+
+signal uart_rdaddr     : std_logic_vector(7 downto 0);
+signal uart_q          : std_logic_vector(7 downto 0);
+
+component txmit is
+generic
+(
+    BAUD       : std_logic_vector(15 downto 0):=X"000B"
+);
+port (
+    nRST        : in std_logic ;
+    sysclk      : in std_logic;
+
+    uart_busy   : out std_logic;
+    wr_uart_en  : in std_logic ;
+    din         : in std_logic_vector(7 downto 0) ;
+    txd         : out std_logic ---to FPGA pin
+) ;
+end component ;
+
+
+type state is (
+    idle         ,
+    uart_fwd     ,
+    tx_turnaround,
+    get_data_w1  ,
+    get_data_w2  ,
+    get_data     ,
+    tx_busy_w
+);
+signal pstate: state := idle;
+
+signal err_num_d1 : std_logic_vector(63 downto 0);
+signal err_num_d2 : std_logic_vector(63 downto 0);
+signal err_num_d3 : std_logic_vector(63 downto 0);
+signal err_num_fiber_d1 : std_logic_vector(63 downto 0);
+signal err_num_fiber_d2 : std_logic_vector(63 downto 0);
+signal err_num_fiber_d3 : std_logic_vector(63 downto 0);
+signal eth_link_d1 : std_logic_vector(FIBERPORT_NUM*ETHPORT_NUM-1 downto 0);
+signal eth_link_d2 : std_logic_vector(FIBERPORT_NUM*ETHPORT_NUM-1 downto 0);
+signal eth_link_d3 : std_logic_vector(FIBERPORT_NUM*ETHPORT_NUM-1 downto 0);
+signal slv_fwd_req : std_logic := '0';
+signal slv_fwd_len : std_logic_vector(7 downto 0);
+signal CODE_SIZE : std_logic_vector(15 downto 0);
+signal CODE_START_ADDR : std_logic_vector(15 downto 0);
+signal CODE_SIZE_ADD : std_logic_vector(7 downto 0);
+signal time_out : std_logic_vector(12 downto 0);
+signal FRAME_TIME_GAP : std_logic_vector(12 downto 0);
+
+begin
+CODE_SIZE <= conv_std_logic_vector(253,16);
+CODE_SIZE_ADD <= conv_std_logic_vector(32,8);
+CODE_START_ADDR <= conv_std_logic_vector(0,16);
+------------------------------------------------------------------
+process(sysclk)
+begin
+if rising_edge(sysclk) then
+    err_num_d1 <= err_num;
+    err_num_d2 <= err_num_d1;
+    err_num_d3 <= err_num_d2;
+    err_num_fiber_d1 <= err_num_fiber;
+    err_num_fiber_d2 <= err_num_fiber_d1;
+    err_num_fiber_d3 <= err_num_fiber_d2;
+    eth_link_d1 <= eth_link;
+    eth_link_d2 <= eth_link_d1;
+    FOR I IN 0 TO FIBERPORT_NUM-1 loop
+       if fiber_link(i) = '1' then
+           eth_link_d3( (i+1)*ETHPORT_NUM-1 downto i*ETHPORT_NUM) <= eth_link_d2( (i+1)*ETHPORT_NUM-1 downto i*ETHPORT_NUM);
+       else
+           eth_link_d3( (i+1)*ETHPORT_NUM-1 downto i*ETHPORT_NUM) <= (others => '0');
+       end if;
+    ---if fiber_link(1) = '1' then
+    ---    eth_link_d3(19 downto 10) <= eth_link_d2(19 downto 10);
+    ---else
+    ---    eth_link_d3(19 downto 10) <= (others => '0');
+    ---end if;
+    end loop;
+    case uart_rdaddr is
+        -- sharing info
+        when X"00" => uart_q <= slv_fwd_len(7 downto 0);
+        when X"04" => uart_q <= X"01";
+        when X"08" => uart_q <= TXSUBCARD_TYPE;
+        when X"0A" => uart_q <= CONS_VER_LOW;
+        when X"0B" => uart_q <= CONS_VER_HIGH;
+        when X"0c" => uart_q <= CODE_SIZE(7 downto 0);
+        when X"0d" => uart_q <= CODE_SIZE(15 downto 8);
+        when X"0e" => uart_q <= CODE_SIZE_ADD;
+        when X"0F" => uart_q <= CODE_START_ADDR(7 downto 0);
+        when X"10" => uart_q <= CODE_START_ADDR(15 downto 8);
+        when X"11" => uart_q <= crc_info;
+        when X"12" => uart_q <= temper_out(7 downto 0);
+        when X"13" => uart_q <= "100000"&temper_out(9 downto 8);
+        -- own info
+        when X"20" => uart_q <= conv_std_logic_vector(FIBERPORT_NUM,8);
+        when X"24" => uart_q <= conv_std_logic_vector(SERDES_SPEED_LSB,8);
+        when X"25" => uart_q <= conv_std_logic_vector(SERDES_SPEED_MSB,8);
+        when X"26" => uart_q <= "000000"&fiber_link;
+        when X"28" => uart_q <= eth_link_d3(7 downto 0);
+        when X"29" => uart_q <= "000000"&eth_link_d3(ETHPORT_NUM-1 downto 8);
+        when X"2A" => uart_q <= eth_link_d3(17 downto ETHPORT_NUM);
+        when X"2B" => uart_q <= "000000"&eth_link_d3(ETHPORT_NUM*FIBERPORT_NUM-1 downto 18);
+
+        when X"60" => uart_q <= err_num_d3(0*8+7 downto 0*8);
+        when X"61" => uart_q <= err_num_d3(1*8+7 downto 1*8);
+        when X"62" => uart_q <= err_num_d3(2*8+7 downto 2*8);
+        when X"63" => uart_q <= err_num_d3(3*8+7 downto 3*8);
+        when X"64" => uart_q <= err_num_d3(4*8+7 downto 4*8);
+        when X"65" => uart_q <= err_num_d3(5*8+7 downto 5*8);
+        when X"66" => uart_q <= err_num_d3(6*8+7 downto 6*8);
+        when X"67" => uart_q <= err_num_d3(7*8+7 downto 7*8);
+        when X"68" => uart_q <= err_num_fiber_d3(0*8+7 downto 0*8);
+        when X"69" => uart_q <= err_num_fiber_d3(1*8+7 downto 1*8);
+        when X"6A" => uart_q <= err_num_fiber_d3(2*8+7 downto 2*8);
+        when X"6B" => uart_q <= err_num_fiber_d3(3*8+7 downto 3*8);
+        when X"6C" => uart_q <= err_num_fiber_d3(4*8+7 downto 4*8);
+        when X"6D" => uart_q <= err_num_fiber_d3(5*8+7 downto 5*8);
+        when X"6E" => uart_q <= err_num_fiber_d3(6*8+7 downto 6*8);
+        when X"6F" => uart_q <= err_num_fiber_d3(7*8+7 downto 7*8);
+
+        when others => uart_q <= (others=>'0');
+    end case;
+end if;
+end process;
+slv_fwd_len <= x"80";
+FRAME_TIME_GAP  <= BAUD_DIV(7 downto 0)&"00000";
+process(nRST,SYSCLK)
+begin
+    if nRST = '0' then
+        pstate       <= idle;
+        fwd_cnt      <= (others => '0');
+        tx_cnt       <= (others => '0');
+        txd_en       <= '0';
+        txd_data     <= (others => '0');
+        time_out <= (others => '0');
+    elsif rising_edge(SYSCLK) then
+        case pstate is
+            when idle =>
+                if time_out = FRAME_TIME_GAP then
+                    pstate <= uart_fwd;
+                    time_out <= (others=>'0');
+                else
+                    time_out <= time_out + '1';
+                end if;
+                fwd_cnt      <= (others => '0');
+                txd_data     <= (others => '0');
+                tx_cnt       <= (others => '0');
+                txd_en       <= '0';
+
+            when uart_fwd =>
+                fwd_cnt <= fwd_cnt + '1';
+                uart_rdaddr <= fwd_cnt(7 downto 0) ;-----+ 5;
+                if fwd_cnt >= slv_fwd_len then
+                    pstate <= idle;
+                else
+                    pstate <= get_data_w1;
+                end if;
+                tx_cnt <= (others => '0');
+            when get_data_w1 =>
+                pstate      <= get_data_w2;
+            when get_data_w2 =>
+                pstate <= get_data;
+            when get_data =>
+                pstate   <= tx_busy_w;
+                txd_en   <= '1';
+                txd_data <= uart_q;
+            when tx_busy_w =>
+                txd_en <= '0';
+                if tx_cnt(3) = '0' then
+                    tx_cnt <= tx_cnt + '1';
+                end if;
+
+                if tx_cnt(3) = '0' then
+                    pstate <= tx_busy_w;
+                elsif tx_uart_busy = '1' then
+                    pstate <= tx_busy_w;
+                else
+                    pstate <= uart_fwd;
+                end if;
+
+            when others => pstate <= idle;
+        end case;
+    end if;
+end process;
+
+uart_info_inst: txmit
+generic map(
+    BAUD         => BAUD_DIV
+)
+PORT map(
+    nRST        => nRST,
+    sysclk      => SYSCLK,
+
+    uart_busy   => tx_uart_busy,
+    wr_uart_en  => txd_en,
+    din         => txd_data,
+    txd         => txd_info_top
+);
+
+tem_rst <= not nRST;
+temperature_inst : temperature
+    port map (
+        corectl => '1', -- corectl.corectl
+        reset   => tem_rst,
+        tempout => temper, -- tempout.tempout
+        eoc     => temper_eoc      --     eoc.eoc
+    );
+    
+    
+
+
+process(SYSCLK)
+begin
+if rising_Edge(SYSCLK) then
+    temper_eoc_d1 <= temper_eoc;
+    temper_eoc_d2 <= temper_eoc_d1;
+    temper_eoc_d3 <= temper_eoc_d2;
+    temper_eoc_d4 <= temper_eoc_d3;
+    temper_d1 <= temper;
+    temper_d2 <= temper_d1;
+    if temper_eoc_d3 = '0' and temper_eoc_d4 = '1' then
+        temper_eoc_falling <= '1';
+    else
+        temper_eoc_falling <= '0';
+    end if;
+    if temper_eoc_falling = '1' then
+        temper_out <= temper_d2;
+    end if;
+end if;
+end process;
+
+end beha;

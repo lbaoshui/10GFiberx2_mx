@@ -1,0 +1,49 @@
+module phyreset_5g (
+		input  wire  clock,               //               clock.clk
+		input  wire  reset,               //               reset.reset
+		output wire  pll_powerdown0,      //      pll_powerdown0.pll_powerdown
+		output wire  tx_analogreset0,     //     tx_analogreset0.tx_analogreset
+		output wire  tx_analogreset1,     //     tx_analogreset1.tx_analogreset
+		output wire  tx_analogreset2,     //     tx_analogreset2.tx_analogreset
+		output wire  tx_analogreset3,     //     tx_analogreset3.tx_analogreset
+		output wire  tx_digitalreset0,    //    tx_digitalreset0.tx_digitalreset
+		output wire  tx_digitalreset1,    //    tx_digitalreset1.tx_digitalreset
+		output wire  tx_digitalreset2,    //    tx_digitalreset2.tx_digitalreset
+		output wire  tx_digitalreset3,    //    tx_digitalreset3.tx_digitalreset
+		output wire  tx_ready0,           //           tx_ready0.tx_ready
+		output wire  tx_ready1,           //           tx_ready1.tx_ready
+		output wire  tx_ready2,           //           tx_ready2.tx_ready
+		output wire  tx_ready3,           //           tx_ready3.tx_ready
+		input  wire  pll_locked0,         //         pll_locked0.pll_locked
+		input  wire  pll_select0,         //         pll_select0.pll_select
+		input  wire  pll_select1,         //         pll_select1.pll_select
+		input  wire  pll_select2,         //         pll_select2.pll_select
+		input  wire  pll_select3,         //         pll_select3.pll_select
+		input  wire  tx_cal_busy0,        //        tx_cal_busy0.tx_cal_busy
+		input  wire  tx_cal_busy1,        //        tx_cal_busy1.tx_cal_busy
+		input  wire  tx_cal_busy2,        //        tx_cal_busy2.tx_cal_busy
+		input  wire  tx_cal_busy3,        //        tx_cal_busy3.tx_cal_busy
+		input  wire  pll_cal_busy0,       //       pll_cal_busy0.pll_cal_busy
+		output wire  rx_analogreset0,     //     rx_analogreset0.rx_analogreset
+		output wire  rx_analogreset1,     //     rx_analogreset1.rx_analogreset
+		output wire  rx_analogreset2,     //     rx_analogreset2.rx_analogreset
+		output wire  rx_analogreset3,     //     rx_analogreset3.rx_analogreset
+		output wire  rx_digitalreset0,    //    rx_digitalreset0.rx_digitalreset
+		output wire  rx_digitalreset1,    //    rx_digitalreset1.rx_digitalreset
+		output wire  rx_digitalreset2,    //    rx_digitalreset2.rx_digitalreset
+		output wire  rx_digitalreset3,    //    rx_digitalreset3.rx_digitalreset
+		output wire  rx_ready0,           //           rx_ready0.rx_ready
+		output wire  rx_ready1,           //           rx_ready1.rx_ready
+		output wire  rx_ready2,           //           rx_ready2.rx_ready
+		output wire  rx_ready3,           //           rx_ready3.rx_ready
+		input  wire  rx_is_lockedtodata0, // rx_is_lockedtodata0.rx_is_lockedtodata
+		input  wire  rx_is_lockedtodata1, // rx_is_lockedtodata1.rx_is_lockedtodata
+		input  wire  rx_is_lockedtodata2, // rx_is_lockedtodata2.rx_is_lockedtodata
+		input  wire  rx_is_lockedtodata3, // rx_is_lockedtodata3.rx_is_lockedtodata
+		input  wire  rx_cal_busy0,        //        rx_cal_busy0.rx_cal_busy
+		input  wire  rx_cal_busy1,        //        rx_cal_busy1.rx_cal_busy
+		input  wire  rx_cal_busy2,        //        rx_cal_busy2.rx_cal_busy
+		input  wire  rx_cal_busy3         //        rx_cal_busy3.rx_cal_busy
+	);
+endmodule
+
