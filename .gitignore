@@ -1,8 +1,13 @@
 bin/
 cof/
 modelsim/
-prj032/
-*.jic
+prj032/output_files/
+prj032/qdb/
+prj032/tmp-clearbox/
 *.hex
 *.rbf
+*.jic
 *.csv
+*.map
+*.stp
+*.rpt

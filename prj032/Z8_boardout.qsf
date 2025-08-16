@@ -1,0 +1,479 @@
+set_global_assignment -name TOP_LEVEL_ENTITY Z8_boardout
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 18.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "19:53:24  FEBRUARY 24, 2020"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Pro Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
+set_global_assignment -name DEVICE 10AX032H4F34E3SG
+set_global_assignment -name FAMILY "Arria 10"
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 2
+set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT NONE -section_id eda_simulation
+set_global_assignment -name POWER_AUTO_COMPUTE_TJ ON
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+
+
+set_location_assignment PIN_AK16 -to CLKUSR
+set_instance_assignment -name IO_STANDARD "1.8 V" -to CLKUSR -entity Z8_boardout
+set_location_assignment PIN_V28 -to clkin_156M_sfp
+set_instance_assignment -name IO_STANDARD LVDS -to clkin_156M_sfp -entity Z8_boardout
+set_location_assignment PIN_P28 -to clkin_156M_5g
+set_instance_assignment -name IO_STANDARD LVDS -to clkin_156M_5g -entity Z8_boardout
+set_location_assignment PIN_AF28 -to clkin_125M
+set_instance_assignment -name IO_STANDARD LVDS -to clkin_125M -entity Z8_boardout
+
+
+set_location_assignment PIN_L21 -to led[0]
+set_location_assignment PIN_K21 -to led[1]
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to led -entity Z8_boardout
+
+set_location_assignment PIN_J20 -to rxd_frmbk
+set_location_assignment PIN_L20 -to txd_tobk
+set_location_assignment PIN_L19 -to txd_info
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to rxd_frmbk -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to txd_tobk -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to txd_info -entity Z8_boardout
+
+
+###############DDR3A#######
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_instance_assignment -name IO_STANDARD LVDS -to mem_pll_ref_clk -entity Z8_boardout
+
+
+
+set_location_assignment PIN_AD25 -to mem_dm[0]
+set_location_assignment PIN_AM27 -to mem_dm[1]
+set_location_assignment PIN_AP24 -to mem_dm[2]
+set_location_assignment PIN_AE23 -to mem_dm[3]
+set_location_assignment PIN_C23 -to mem_dm[4]
+
+
+set_location_assignment PIN_AJ27 -to mem_dq[0]
+set_location_assignment PIN_AH27 -to mem_dq[1]
+set_location_assignment PIN_AJ26 -to mem_dq[2]
+set_location_assignment PIN_AD24 -to mem_dq[3]
+set_location_assignment PIN_AJ25 -to mem_dq[4]
+set_location_assignment PIN_AE24 -to mem_dq[5]
+set_location_assignment PIN_AH25 -to mem_dq[6]
+set_location_assignment PIN_AH26 -to mem_dq[7]
+set_location_assignment PIN_AN27 -to mem_dq[8]
+set_location_assignment PIN_AP27 -to mem_dq[9]
+set_location_assignment PIN_AK26 -to mem_dq[10]
+set_location_assignment PIN_AN25 -to mem_dq[11]
+set_location_assignment PIN_AL26 -to mem_dq[12]
+set_location_assignment PIN_AP25 -to mem_dq[13]
+set_location_assignment PIN_AK27 -to mem_dq[14]
+set_location_assignment PIN_AP26 -to mem_dq[15]
+set_location_assignment PIN_AN23 -to mem_dq[16]
+set_location_assignment PIN_AM23 -to mem_dq[17]
+set_location_assignment PIN_AP20 -to mem_dq[18]
+set_location_assignment PIN_AL24 -to mem_dq[19]
+set_location_assignment PIN_AP21 -to mem_dq[20]
+set_location_assignment PIN_AL25 -to mem_dq[21]
+set_location_assignment PIN_AP22 -to mem_dq[22]
+set_location_assignment PIN_AN24 -to mem_dq[23]
+set_location_assignment PIN_AL23 -to mem_dq[24]
+set_location_assignment PIN_AG23 -to mem_dq[25]
+set_location_assignment PIN_AK24 -to mem_dq[26]
+set_location_assignment PIN_AK23 -to mem_dq[27]
+set_location_assignment PIN_AF24 -to mem_dq[28]
+set_location_assignment PIN_AF23 -to mem_dq[29]
+set_location_assignment PIN_AJ24 -to mem_dq[30]
+set_location_assignment PIN_AK22 -to mem_dq[31]
+set_location_assignment PIN_B27 -to mem_dq[32]
+set_location_assignment PIN_A24 -to mem_dq[33]
+set_location_assignment PIN_A26 -to mem_dq[34]
+set_location_assignment PIN_B23 -to mem_dq[35]
+set_location_assignment PIN_C27 -to mem_dq[36]
+set_location_assignment PIN_A25 -to mem_dq[37]
+set_location_assignment PIN_B26 -to mem_dq[38]
+set_location_assignment PIN_B25 -to mem_dq[39]
+
+
+
+set_location_assignment PIN_E26 -to mem_cas_n[0]
+set_location_assignment PIN_F23 -to mem_ras_n[0]
+set_location_assignment PIN_L23 -to mem_ck[0]
+set_location_assignment PIN_M23 -to mem_ck_n[0]
+set_location_assignment PIN_J27 -to mem_cke[0]
+set_location_assignment PIN_K25 -to mem_odt[0]
+set_location_assignment PIN_K24 -to mem_cs_n[0]
+set_location_assignment PIN_L24 -to mem_reset_n[0]
+set_location_assignment PIN_M24 -to mem_we_n[0]
+
+set_location_assignment PIN_AG25 -to mem_dqs[0]
+set_location_assignment PIN_AF25 -to mem_dqs_n[0]
+set_location_assignment PIN_AM25 -to mem_dqs[1]
+set_location_assignment PIN_AM26 -to mem_dqs_n[1]
+set_location_assignment PIN_AM22 -to mem_dqs[2]
+set_location_assignment PIN_AN22 -to mem_dqs_n[2]
+set_location_assignment PIN_AH23 -to mem_dqs[3]
+set_location_assignment PIN_AH24 -to mem_dqs_n[3]
+set_location_assignment PIN_C24 -to mem_dqs[4]
+set_location_assignment PIN_D24 -to mem_dqs_n[4]
+
+
+set_location_assignment PIN_H27 -to mem_a[0]
+set_location_assignment PIN_G27 -to mem_a[1]
+set_location_assignment PIN_G23 -to mem_a[2]
+set_location_assignment PIN_G22 -to mem_a[3]
+set_location_assignment PIN_H25 -to mem_a[4]
+set_location_assignment PIN_G25 -to mem_a[5]
+set_location_assignment PIN_H24 -to mem_a[6]
+set_location_assignment PIN_H23 -to mem_a[7]
+set_location_assignment PIN_H22 -to mem_a[8]
+set_location_assignment PIN_J22 -to mem_a[9]
+set_location_assignment PIN_G26 -to mem_a[10]
+set_location_assignment PIN_F26 -to mem_a[11]
+set_location_assignment PIN_F24 -to mem_a[12]
+
+
+set_location_assignment PIN_D26 -to mem_ba[0]
+set_location_assignment PIN_D25 -to mem_ba[1]
+set_location_assignment PIN_C25 -to mem_ba[2]
+
+
+set_location_assignment PIN_F25 -to mem_oct_rzqin[0]
+
+
+set_location_assignment PIN_E23 -to mem_pll_ref_clk[0]
+set_location_assignment PIN_E24 -to "mem_pll_ref_clk[0](n)"
+
+
+
+
+##############################
+
+set_location_assignment PIN_AJ30 -to rx_serial_data[0]
+set_location_assignment PIN_AL30 -to rx_serial_data[1]
+set_location_assignment PIN_AF32 -to rx_serial_data[2]
+set_location_assignment PIN_AG30 -to rx_serial_data[3]
+set_location_assignment PIN_AE30 -to rx_serial_data[4]
+
+##set_location_assignment PIN_P32 -to rx_serial_sfpdata[0]
+##set_location_assignment PIN_R30 -to rx_serial_sfpdata[1]
+set_location_assignment PIN_T32 -to rx_serial_sfpdata[0]
+set_location_assignment PIN_U30 -to rx_serial_sfpdata[1]
+
+
+set_location_assignment PIN_R34 -to tx_serial_sfpdata[0]
+set_location_assignment PIN_U34 -to tx_serial_sfpdata[1]
+
+
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK LR -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM STG1_GAIN7 -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_2 -to rx_serial_data -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_13 -to rx_serial_data -entity Z8_boardout
+
+
+
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK SR -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK SR -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK SR -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK SR -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM NO_DC_GAIN -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM NO_DC_GAIN -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM NO_DC_GAIN -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_14 -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_14 -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_14 -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_14 -to rx_serial_sfpdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_4 -to rx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_4 -to rx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_4 -to rx_serial_sfpdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_4 -to rx_serial_sfpdata[3] -entity Z8_boardout
+
+
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM STG1_GAIN7 -to rx_serial_sfpdata[0] -entity Z8_boardout
+
+
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_COMPENSATION_EN ENABLE -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_COMPENSATION_EN ENABLE -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_LINK SR -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_LINK SR -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_SLEW_RATE_CTRL SLEW_R5 -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_SLEW_RATE_CTRL SLEW_R5 -to tx_serial_sfpdata[1] -entity Z8_boardout
+
+set_instance_assignment -name XCVR_A10_TX_VOD_OUTPUT_SWING_CTRL 28 -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_VOD_OUTPUT_SWING_CTRL 27 -to tx_serial_sfpdata[1] -entity Z8_boardout
+
+
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_PRE_TAP_1T FIR_PRE_1T_NEG -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_1T 3 -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_1ST_POST_TAP FIR_POST_1T_NEG -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_1ST_POST_TAP 8 -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_PRE_TAP_2T FIR_PRE_2T_POS -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_2T 0 -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_2ND_POST_TAP FIR_POST_2T_POS -to tx_serial_sfpdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_2ND_POST_TAP 0 -to tx_serial_sfpdata[0] -entity Z8_boardout
+
+
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_PRE_TAP_1T FIR_PRE_1T_NEG -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_1T 3 -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_1ST_POST_TAP FIR_POST_1T_NEG -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_1ST_POST_TAP 8 -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_PRE_TAP_2T FIR_PRE_2T_POS -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_2T 0 -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_2ND_POST_TAP FIR_POST_2T_POS -to tx_serial_sfpdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_2ND_POST_TAP 0 -to tx_serial_sfpdata[1] -entity Z8_boardout
+
+
+#################################################################
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYAB_RESET -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYAB_MDC -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYAB_MDIO -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYCD_RESET -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYCD_MDC -entity Z8_boardout
+set_instance_assignment -name IO_STANDARD "3.0-V LVTTL" -to PHYCD_MDIO -entity Z8_boardout
+
+set_location_assignment PIN_H18 -to PHYAB_RESET
+set_location_assignment PIN_G17 -to PHYAB_MDC
+set_location_assignment PIN_G18 -to PHYAB_MDIO
+set_location_assignment PIN_G21 -to PHYCD_RESET
+set_location_assignment PIN_J21 -to PHYCD_MDC
+set_location_assignment PIN_H20 -to PHYCD_MDIO
+
+#################################################################
+set_location_assignment PIN_L30 -to rx_serial_5gdata[0]
+set_location_assignment PIN_L29 -to "rx_serial_5gdata[0](n)"
+set_location_assignment PIN_K32 -to rx_serial_5gdata[1]
+set_location_assignment PIN_K31 -to "rx_serial_5gdata[1](n)"
+set_location_assignment PIN_J30 -to rx_serial_5gdata[2]
+set_location_assignment PIN_J29 -to "rx_serial_5gdata[2](n)"
+set_location_assignment PIN_G30 -to rx_serial_5gdata[3]
+set_location_assignment PIN_G29 -to "rx_serial_5gdata[3](n)"
+
+set_location_assignment PIN_E34 -to tx_serial_5gdata[0]
+set_location_assignment PIN_E33 -to "tx_serial_5gdata[0](n)"
+set_location_assignment PIN_C34 -to tx_serial_5gdata[1]
+set_location_assignment PIN_C33 -to "tx_serial_5gdata[1](n)"
+set_location_assignment PIN_H32 -to tx_serial_5gdata[2]
+set_location_assignment PIN_H31 -to "tx_serial_5gdata[2](n)"
+set_location_assignment PIN_F32 -to tx_serial_5gdata[3]
+set_location_assignment PIN_F31 -to "tx_serial_5gdata[3](n)"
+
+set_instance_assignment -name XCVR_RECONFIG_GROUP 0 -to tx_serial_5gdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 0 -to rx_serial_5gdata[0] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 1 -to tx_serial_5gdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 1 -to rx_serial_5gdata[1] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 2 -to tx_serial_5gdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 2 -to rx_serial_5gdata[2] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 3 -to tx_serial_5gdata[3] -entity Z8_boardout
+set_instance_assignment -name XCVR_RECONFIG_GROUP 3 -to rx_serial_5gdata[3] -entity Z8_boardout
+
+
+
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_LINK SR -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ONE_STAGE_ENABLE NON_S1_MODE -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_EQ_DC_GAIN_TRIM NO_DC_GAIN -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_CTLE_ACGAIN_4S RADP_CTLE_ACGAIN_4S_4 -to rx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_RX_ADP_VGA_SEL RADP_VGA_SEL_4 -to rx_serial_5gdata -entity Z8_boardout
+
+set_instance_assignment -name IO_STANDARD "HIGH SPEED DIFFERENTIAL I/O" -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_COMPENSATION_EN ENABLE -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_LINK SR -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_VCCR_VCCT_VOLTAGE 1_0V -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_SLEW_RATE_CTRL SLEW_R4 -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_VOD_OUTPUT_SWING_CTRL 31 -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_PRE_TAP_1T FIR_PRE_1T_NEG -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_1T 5 -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SIGN_1ST_POST_TAP FIR_POST_1T_NEG -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_1ST_POST_TAP 6 -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_PRE_TAP_2T 0 -to tx_serial_5gdata -entity Z8_boardout
+set_instance_assignment -name XCVR_A10_TX_PRE_EMP_SWITCHING_CTRL_2ND_POST_TAP 0 -to tx_serial_5gdata -entity Z8_boardout
+
+
+set_global_assignment -name ENABLE_SIGNALTAP ON
+##set_global_assignment -name USE_SIGNALTAP_FILE phy_5G.stp
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name STRATIXV_CONFIGURATION_SCHEME "ACTIVE SERIAL X1"
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name STRATIXII_CONFIGURATION_DEVICE MT25QU256
+set_global_assignment -name GENERATE_PR_RBF_FILE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN ON
+set_global_assignment -name ACTIVE_SERIAL_CLOCK FREQ_100MHZ
+set_global_assignment -name OPTIMIZATION_MODE "HIGH PERFORMANCE EFFORT WITH MAXIMUM PLACEMENT EFFORT"
+set_global_assignment -name STATE_MACHINE_PROCESSING "ONE-HOT"
+set_global_assignment -name PROGRAMMABLE_POWER_TECHNOLOGY_SETTING "FORCE ALL USED TILES TO HIGH SPEED"
+set_global_assignment -name SEED 1
+set_global_assignment -name IP_FILE ../src/serdes_para_top/ip/dpram_16bx2048.ip
+set_global_assignment -name IP_FILE ../src/serdes_para_top/ip/cmdfifo.ip
+set_global_assignment -name VHDL_FILE ../src/serdes_para_top/para_serdes_top.vhd
+set_global_assignment -name VHDL_FILE ../src/serdes_para_top/frm_reconstruct.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/simul_eth_timing.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/pma2_recalib.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/pma_recalib.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ddr3_check.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ddr_rst_ctrl.vhd
+set_global_assignment -name VHDL_FILE ../src/version/PCK_version_FPGA_def_032_mxflash.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/xgmii_rx.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/det_rcv_sched.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/rt_param_store.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/shuttersync/shutter_sync_rcv.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/shuttersync/shutter_sched.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/shuttersync/shutter_ddr3_op.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/shuttersync/shutter_ddr3_wr.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/shuttersync/shutter_ddr3_rd.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/PCK_param_sched.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/rcvparam_store.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/param_sched.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/param_filter07.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/param_div_unit.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart_tx.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart_rx.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/fpll_recalib.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/recalib_avmm.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/pma_recalib2.vhd
+set_global_assignment -name VHDL_FILE ../src/fpll_recalib/atxpll_recalib.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/global_ctrl.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/autobright_upload.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/filter_upstream.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D64_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D56_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D48_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D40_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D32_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D24_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D16_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/PCK_CRC32_D8_NEW.vhd
+set_global_assignment -name VHDL_FILE ../src/CRC64/crc64_top.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/xgmii_cmb.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/vsync_neg_edge.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/vsync_cross.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/PCK_bk_serdes.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/BK2fiber_oneFiber.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/BK2fiber_conv.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/bk2fiber_chan.vhd
+set_global_assignment -name VHDL_FILE ../src/BK2TX/bk_serdes_rcv.vhd
+set_global_assignment -name VHDL_FILE ../src/param_tx/downparam_tx.vhd
+set_global_assignment -name IP_FILE ../src/uart/uart_crossrx_dpram.ip
+set_global_assignment -name VHDL_FILE ../src/uart/uart_cmd_cross.vhd
+set_global_assignment -name VHDL_FILE ../src/crossdomain/s_no_data_synchronizer.vhd
+set_global_assignment -name VHDL_FILE ../src/crossdomain/cross_domain.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart_64to8.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/xgmii2uart.vhd
+set_global_assignment -name SDC_FILE Z8_boardout.sdc
+set_global_assignment -name VHDL_FILE ../src/top/time_ms_gen.vhd
+set_global_assignment -name VHDL_FILE ../src/update/top_update.vhd
+set_global_assignment -name VHDL_FILE ../src/update/spi_flash_a10.vhd
+set_global_assignment -name VHDL_FILE ../src/update/para_update.vhd
+set_global_assignment -name IP_FILE ../src/update/generic_spi_flash.ip
+set_global_assignment -name IP_FILE ../src/update/dpram_32bit_64.ip
+set_global_assignment -name VHDL_FILE ../src/update/ctrl_flash_c10.vhd
+set_global_assignment -name IP_FILE ../src/uart/uart_rx_dpram.ip
+set_global_assignment -name VHDL_FILE ../src/uart/uart_param_top.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart_param.vhd
+set_global_assignment -name VHDL_FILE ../src/uart/uart_info.vhd
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/PCK_CRC32_D8.vhd
+set_global_assignment -name VHDL_FILE ../src/5GbaseR/serdes8b10b_tx_5GBaseR.vhd
+set_global_assignment -name IP_FILE ../src/5GbaseR/kr_atx_5g.ip
+set_global_assignment -name IP_FILE ../src/5GbaseR/ip8b10b_5gbaseR.ip
+set_global_assignment -name IP_FILE ../src/BCM54991EL/DPRAM/flash_config_dpram.ip
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/vidout_net5G_top.vhd
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/spi_flash_AX.vhd
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/SPI_flash.vhd
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/PHY_RESET.vhd
+set_global_assignment -name VHDL_FILE ../src/BCM54991EL/eth_Man.vhd
+set_global_assignment -name VHDL_FILE "../src/BCM54991EL/config_2phy _setr.vhd"
+set_global_assignment -name VHDL_FILE ../src/test_harness/xgmii_src.vhd
+set_global_assignment -name VHDL_FILE ../src/test_harness/xgmii_sink.vhd
+set_global_assignment -name VHDL_FILE ../src/test_harness/test_harness.vhd
+set_global_assignment -name VHDL_FILE ../src/measure/testclk.vhd
+set_global_assignment -name VHDL_FILE ../src/measure/multi_measure.vhd
+set_global_assignment -name VHDL_FILE ../src/transceiver_fifo/xgmii_dataalign.vhd
+set_global_assignment -name VHDL_FILE ../src/transceiver_fifo/convto_xgmii_sfp.vhd
+set_global_assignment -name VHDL_FILE ../src/top/vsync_top.vhd
+set_global_assignment -name VHDL_FILE ../src/top/resetmodule.vhd
+set_global_assignment -name VHDL_FILE ../src/top/Z8_boardout.vhd
+set_global_assignment -name VHDL_FILE ../src/serdes_dataout/serdes_dataout.vhd
+set_global_assignment -name VHDL_FILE ../src/serdes_datain/serdes_datain.vhd
+set_global_assignment -name IP_FILE ../src/serdes_datain/transceiver/trans_phy.ip
+set_global_assignment -name IP_FILE ../src/serdes_datain/phyreset/phyreset.ip
+set_global_assignment -name IP_FILE ../src/serdes_dataout/serdes_ip/serdes_ip.ip
+set_global_assignment -name IP_FILE ../src/serdes_dataout/serdes_reset/serdes_reset.ip
+set_global_assignment -name IP_FILE ../src/serdes_dataout/serdes_atx/serdes_atx.ip
+set_global_assignment -name IP_FILE ../src/top/main_pll/main_pll.ip
+set_global_assignment -name IP_FILE ../src/transceiver_fifo/trans_fifo_in/trans_fifo_in.ip
+set_global_assignment -name SIGNALTAP_FILE stp.stp
+set_global_assignment -name IP_FILE ../src/5GbaseR/phyreset_5g.ip
+set_global_assignment -name IP_FILE ../src/uart/temperature.ip
+set_global_assignment -name IP_FILE ../src/top/altclkctrl.ip
+set_global_assignment -name IP_FILE ../src/uart/uart_conv_dpram.ip
+set_global_assignment -name IP_FILE ../src/top/rsu.ip
+set_global_assignment -name IP_FILE ../src/5GbaseR/fpll_5g.ip
+set_global_assignment -name IP_FILE ../src/BK2TX/vsyncinfo_ram.ip
+set_global_assignment -name IP_FILE ../src/IP/paramBlkRam_512x72.ip
+set_global_assignment -name IP_FILE ../src/IP/txInfoFifo.ip
+set_global_assignment -name IP_FILE ../src/IP/tx_vid_fifo.ip
+set_global_assignment -name IP_FILE ../src/IP/txParamFifo.ip
+set_global_assignment -name IP_FILE ../src/IP/txParam_dram.ip
+set_global_assignment -name HEX_FILE oardout.hex
+set_global_assignment -name HEX_FILE 0_boardout.hex
+set_global_assignment -name IP_FILE ../src/param_tx/IP/param_ram4096x8_buf.ip
+set_global_assignment -name IP_FILE ../src/param_tx/IP/paramBlkRam2048x72.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shuttersync_schedtable.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shuttersync_ram_position.ip
+set_global_assignment -name IP_FILE ../src/param_tx/IP/Up08_conv_dpram.ip
+set_global_assignment -name IP_FILE ../src/sim/Probe.ip
+set_global_assignment -name IP_FILE ../src/sim/probe_flow.ip
+set_global_assignment -name IP_FILE ../src/param_tx/IP/paramBlkRam2560x72.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shuttersync_data86016x16.ip
+set_global_assignment -name IP_FILE ../src/uart/xgmiirx_cmd_fifo.ip
+set_global_assignment -name IP_FILE ../src/uart/up_data_dpram_8x4096.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shutter_data_dpram.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shutter_buff_dpram.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shutter_databuff_72bitx512.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_wrreq_cmdfifo.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_rdreq_cmdfifo.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_rddata_fifo.ip
+set_global_assignment -name IP_FILE ../src/bus/div10.ip
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_wrreq_cmdfifo_pack.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_wrmask_dpram_pack.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_rdresp_cmdfifo_pack.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_rdreq_cmdfifo_pack.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_rddata_fifo_pack.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ip_pack/ddr_datadpram_pack.vhd
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_wrmask_dpram.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_wrdata_dpram.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/ddr_rdresp_cmdfifo.ip
+set_global_assignment -name IP_FILE ../src/bus/ip/bfm_slave_avalon.ip
+set_global_assignment -name VHDL_FILE ../src/bus/write_cmd_gen.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/write_cmd_arb.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/scheduler_b.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/read_cmd_gen.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/read_cmd_arb.vhd
+set_global_assignment -name VHDL_FILE ../src/bus/ddr_bus_top.vhd
+set_global_assignment -name IP_FILE ../src/bus/fifo320.ip
+set_global_assignment -name IP_FILE ../src/bus/LPM_9x10.ip
+set_global_assignment -name IP_FILE ../src/ddr3_ip/ed_synth/ed_synth_emif_0.ip
+set_global_assignment -name IP_FILE ../src/param_tx/shuttersync/shutter_wrbuff_dpram.ip
+set_global_assignment -name IP_FILE ../src/issp/issp.ip
+set_global_assignment -name SIGNALTAP_FILE phy_5G.stp
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+set_global_assignment -name USE_SIGNALTAP_FILE stp1.stp

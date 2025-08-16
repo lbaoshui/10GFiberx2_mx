@@ -1,0 +1,22 @@
+{
+	"system" : {
+		"platform" : "windows64",
+		"os_name" : "Windows 10",
+		"os_version" : "10.0"
+	},
+	"error" : {
+		"executable" : "quartus_syn",
+		"comment" : "not_applicable",
+		"error_message" : "Access Violation at 00007FF983D58873",
+		"source_file" : "unknown",
+		"line" : "0",
+		"stack_trace" : "\t0x7ff983d58872: db_cdb_sgate + 0x18872 (CDB_SGATE_NETLIST::remove_no_rank_nodes + 0x422)\n\t0x7ff9674944a6: SYNTH_ALGS + 0x844a6 (?algs_create_buses@@YAXPEAVCDB_SGATE_NETLIST@@@Z + 0x26)\n\t0x7ff9fca312ab: SYNTH_OPT + 0x212ab (OPT_WL_MANAGER::prepare + 0xab)\n\t0x7ff9fca31443: SYNTH_OPT + 0x21443 (?create_wl@OPT_WL_MANAGER@@QEAAXXZ + 0x43)\n\t0x7ff9fca77f80: SYNTH_OPT + 0x67f80 (RTL_SCRIPT::call_named_function + 0x8d0)\n\t0x7ff9fca76e77: SYNTH_OPT + 0x66e77 (RTL_SCRIPT::process_script + 0x503)\n\t0x7ff9fca8cb40: SYNTH_OPT + 0x7cb40 (opt_run_parallel_rtl + 0xf8)\n\t0x7ff979ac4529: synth_qis + 0x94529 (`anonymous namespace&apos;::PRALLEL_OPTIMIZER::optimize + 0xf9)\n\t0x7ff979ac8c5d: synth_qis + 0x98c5d (?work@PARALLEL_HELPER@QIS@SYNTH@@QEAA_NXZ + 0x60d)\n\t0x7ff979a7ac02: synth_qis + 0x4ac02 (?synthesize_parallel@IMPL@QIS_RTL_STAGE@@QEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H000@Z + 0x92)\n\t0x7ff979a48e26: synth_qis + 0x18e26 (qis_synthesize_parallel + 0x276)\n\t 0x62796442: tcl86 + 0x16442 (TclNRRunCallbacks + 0x62)\n\t 0x62797c4d: tcl86 + 0x17c4d (TclEvalEx + 0x9ed)\n\t 0x62826a8b: tcl86 + 0xa6a8b (Tcl_FSEvalFileEx + 0x22b)\n\t 0x62825136: tcl86 + 0xa5136 (Tcl_EvalFile + 0x36)\n\t0x7ffa19801fac: comp_qexe + 0x11fac (?qexe_evaluate_tcl_script@@YA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z + 0x2cc)\n\t0x7ffa19801215: comp_qexe + 0x11215 (qexe_do_tcl + 0x345)\n\t0x7ffa1980671e: comp_qexe + 0x1671e (?qexe_run_tcl_option@@YA_NPEAVQEXE_FRAMEWORK@@PEBDPEAV?$list@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@_N@Z + 0x5ee)\n\t0x7ff9a39a6711: comp_qcu + 0x26711 (?qcu_run_tcl_option@@YA_NPEAVQCU_FRAMEWORK@@PEBDPEAV?$list@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@_N@Z + 0xc61)\n\t0x7ffa1980601b: comp_qexe + 0x1601b (qexe_run + 0x3ab)\n\t0x7ffa198070e4: comp_qexe + 0x170e4 (?qexe_standard_main@@YAHPEAVQEXE_FRAMEWORK@@PEAPEBUQEXE_OPTION_DEFINITION@@HPEAPEBD@Z + 0xe4)\n\t0x7ff6074f30a9: quartus_syn + 0x30a9 (?qsyn2_main@@YAHHQEAPEBD@Z + 0xe9)\n\t0x7ffa1b523e58: CCL_MSG + 0x13e58 (?msg_main_thread@@YAPEAXPEAX@Z + 0x18)\n\t0x7ffa1b52516e: CCL_MSG + 0x1516e (?msg_thread_wrapper@@YAPEAXP6APEAXPEAX@Z0@Z + 0x6e)\n\t0x7ffa1b3df900: ccl_mem + 0x1f900 (?mem_thread_wrapper@@YAPEAXP6APEAXPEAX@Z0@Z + 0x70)\n\t0x7ffa1b52348e: CCL_MSG + 0x1348e (?msg_exe_main@@YAHHPEAPEBDP6AHH0@Z@Z + 0xae)\n\t0x7ff6074f46c4: quartus_syn + 0x46c4 (__scrt_common_main_seh + 0x11c)\n\t0x7ffa34dde8d6: KERNEL32 + 0x2e8d6 (BaseThreadInitThunk + 0x16)\n\t0x7ffa35bfc34b: ntdll + 0x3c34b (RtlUserThreadStart + 0x2b)\n",
+		"subsystem" : "unknown"
+	},
+	"quartus" : {
+		"quartus_bits" : "64",
+		"version" : "18.1.0",
+		"build" : "222",
+		"edition" : "Pro Edition"
+	}
+}
